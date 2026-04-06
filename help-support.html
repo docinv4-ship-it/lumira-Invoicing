@@ -1,0 +1,155 @@
+<!DOCTYPE html>  
+<html lang="en" data-theme="light">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+  <title>Lumira Invoicing — Support</title>  
+  <meta name="theme-color" content="#f8fafc" />  
+  <meta name="description" content="Support and feedback for Lumira Invoicing." />  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    :root{--bg:#f6f8fc;--panel:#fff;--panel2:#fbfdff;--panel3:#f8fbff;--border:#e6ebf2;--border2:#d8e0ea;--text:#0f172a;--muted:#64748b;--brand:#2563eb;--brand2:#7c3aed;--danger:#ef4444;--ok:#16a34a;--shadow:0 18px 50px rgba(15,23,42,.08);--shadow2:0 10px 24px rgba(15,23,42,.06);--max:1240px}
+    html[data-theme="dark"]{--bg:#07101d;--panel:#0c1628;--panel2:#0f1a2f;--panel3:#0e1a2d;--border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.16);--text:#edf4ff;--muted:#a6b3cb;--brand:#60a5fa;--brand2:#8b5cf6;--danger:#fb7185;--ok:#22c55e;--shadow:0 24px 70px rgba(0,0,0,.34);--shadow2:0 14px 34px rgba(0,0,0,.18)}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 8% 0%,rgba(96,165,250,.12),transparent 24%),radial-gradient(circle at 88% 10%,rgba(139,92,246,.12),transparent 22%),linear-gradient(180deg,var(--bg),var(--bg));overflow-x:hidden} a{color:inherit;text-decoration:none} button{font:inherit;cursor:pointer}
+    .page{width:min(calc(100% - 24px),var(--max));margin:0 auto;padding:16px 0 28px}.topbar,.card,.footer,.feedback-strip{border:1px solid var(--border);background:var(--panel);box-shadow:var(--shadow2);border-radius:22px}.topbar{position:sticky;top:0;z-index:10;margin-bottom:16px;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 88%,transparent)}.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;box-shadow:0 12px 26px rgba(37,99,235,.18)}.brand-mark svg{width:22px;height:22px;fill:#fff}.brand-text{display:flex;flex-direction:column;line-height:1.1}.brand-text strong{font-size:1rem}.brand-text span{font-size:.82rem;color:var(--muted)}.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.top-link,.icon-link,.theme-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-weight:700;white-space:nowrap}.top-link.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}.icon-link,.theme-btn{width:40px;padding:0;border-radius:12px}.icon-link svg,.theme-btn svg,.social-ico svg{width:18px;height:18px;fill:currentColor}.floating svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.floating{position:fixed;right:18px;bottom:18px;z-index:20;display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border:0;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 16px 32px rgba(37,99,235,.24);font-weight:800}.search-hero{padding:32px 24px;margin-bottom:16px;background:linear-gradient(180deg,var(--panel),var(--panel2))}.search-hero h1{margin:0;font-size:clamp(1.45rem,3vw,2.2rem);letter-spacing:-.04em;line-height:1.05}.search-hero p{margin:10px 0 18px;color:var(--muted);max-width:72ch;line-height:1.6}.search-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:14px;border:0;font-weight:800}.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 12px 24px rgba(37,99,235,.18)}.btn-secondary{background:var(--panel3);color:var(--text);border:1px solid var(--border)}
+    .layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;align-items:start}.sidebar{position:sticky;top:92px;display:grid;gap:12px;min-width:0}.sidebar-card{padding:20px}.sidebar-title{margin:0 0 12px;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}.nav-list{display:grid;gap:8px}.nav-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:14px;border:1px solid transparent;background:var(--panel3);color:var(--text);font-size:.93rem;font-weight:700}.nav-link:hover{background:var(--panel);border-color:var(--border2)}.nav-link small{color:var(--muted)}.content{display:grid;gap:24px;min-width:0}.support-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.field{display:grid;gap:8px}.field label{font-size:.9rem;font-weight:700;color:var(--text)}.input,.textarea{width:100%;border-radius:14px;border:1px solid var(--border2);background:var(--panel);color:var(--text);padding:16px 18px;outline:none;font-size:1rem;transition:border .2s}.input:focus,.textarea:focus{border-color:var(--brand);box-shadow:0 0 0 4px rgba(37,235,235,.1)}.textarea{min-height:160px;resize:vertical;line-height:1.55}.status{display:none;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:var(--panel3);font-size:.94rem;line-height:1.55}.status.show{display:block}.status.ok{border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.08);color:var(--ok)}.status.error{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08);color:var(--danger)}.support-form{display:grid;gap:20px}.support-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}.support-hint{color:var(--muted);font-size:.9rem;line-height:1.5}.note-list{display:grid;gap:8px;margin:0;padding-left:18px;color:color-mix(in srgb,var(--text) 86%,var(--muted));line-height:1.6;font-size:.95rem}.feedback-strip{padding:24px;display:grid;gap:12px}.footer{margin-top:24px;padding:20px 24px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.footer small{color:var(--muted)}.footer-links{display:flex;gap:16px;flex-wrap:wrap}.footer-links a{color:var(--brand);font-weight:800}.hidden{display:none!important}
+    @media (max-width:1080px){.layout{grid-template-columns:1fr}}
+    @media (max-width:900px){.support-grid{grid-template-columns:1fr}}
+    @media (max-width:720px){.page{width:min(calc(100% - 16px),var(--max));padding-top:10px}.topbar{border-radius:18px}.topbar-inner,.search-hero,.section,.footer,.feedback-strip{padding-left:16px;padding-right:16px}.sidebar-card{padding:16px}.floating{right:12px;bottom:12px;padding:11px 15px}.top-actions{width:100%}.top-link.primary{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar"><div class="topbar-inner">
+      <a class="brand" href="help.html"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2zm0 2.2L6 7v7.8l6 3.4 6-3.4V7l-6-2.8zM11 8h2v5h-2V8zm0 6h2v2h-2v-2z"/></svg></div><div class="brand-text"><strong>Lumira Invoicing</strong><span>Support</span></div></a>
+      <div class="top-actions"><a class="top-link primary" href="editor.html">Open Editor</a><a class="icon-link" href="help.html" aria-label="Home"><svg viewBox="0 0 24 24"><path d="M12 2 2 10h3v10h6v-6h2v6h6V10h3z"/></svg></a><a class="icon-link" href="help-guide.html" aria-label="Guide"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg></a><button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v1.05a7 7 0 0 1 5.95 5.95H20a1 1 0 1 1 0 2h-1.05A7 7 0 0 1 13 18.95V20a1 1 0 1 1-2 0v-1.05A7 7 0 0 1 5.05 13H4a1 1 0 1 1 0-2h1.05A7 7 0 0 1 11 5.05V4a1 1 0 0 1 1-1zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg></button></div>
+    </div></header>
+
+    <section class="search-hero card"><h1>Get help instantly.</h1><p>Support and feedback in one clean place.</p><div class="search-bar"><a class="btn btn-primary" href="#supportForm">Contact Support</a><button class="btn btn-secondary" type="button" data-open-feedback>Send Feedback</button></div></section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="card sidebar-card"><div class="sidebar-title">Quick navigation</div><div class="nav-list"><a class="nav-link" href="#support">Support Form <small>01</small></a><a class="nav-link" href="#feedback">Feedback <small>02</small></a></div></div>
+        <div class="card sidebar-card"><div class="sidebar-title">Quick actions</div><div class="btn-row"><a class="btn btn-primary" href="help-guide.html">Open Guide</a><a class="btn btn-secondary" href="editor.html">Go to Editor</a></div></div>
+      </aside>
+
+      <main class="content">
+        <section class="card section anchor" id="support" data-topic="support"><div class="section-head"><div><h2>Contact Support</h2><p>One form. Fast response.</p></div></div><div class="support-grid"><div class="help-item"><form id="supportForm" class="support-form"><div class="field"><label for="user_name">Your Name</label><input class="input" id="user_name" name="user_name" type="text" autocomplete="name" placeholder="Enter your name" required minlength="2" /></div><div class="field"><label for="user_email">Your Email</label><input class="input" id="user_email" name="user_email" type="email" autocomplete="email" placeholder="Enter your email" required /></div><div class="field"><label for="message">Message</label><textarea class="textarea" id="message" name="message" placeholder="Describe the issue and what you expected..." required minlength="10"></textarea></div><div id="supportStatus" class="status" aria-live="polite"></div><div class="support-actions"><button class="btn btn-primary" id="sendSupportBtn" type="submit">Send Message</button></div></form></div><div class="help-item"><h3>What to include</h3><ul class="note-list"><li>Page you were on</li><li>What you clicked</li><li>What happened</li><li>Expected result</li></ul></div></div></section>
+        <section class="card section anchor" id="feedback" data-topic="feedback"><div class="section-head"><div><h2>Feedback</h2><p>Bug reports, feature ideas, and suggestions are always welcome.</p></div></div><div class="grid-2"><div class="help-item"><div class="support-actions"><button class="btn btn-primary" type="button" data-open-feedback>Send Feedback</button></div></div></div></section>
+        <section class="feedback-strip"><h3>Thank you for helping us improve.</h3></section>
+        <footer class="footer"><small>© Lumira Invoicing Support</small><div class="footer-links"><a href="help.html">Home</a><a href="help-guide.html">Guide</a><a href="editor.html">Editor</a></div></footer>
+      </main>
+    </div>
+  </div>
+  <button class="floating" id="floatingSupport" type="button">
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Feedback
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function() {
+      const k = 'lumira-theme';
+      const EMAILJS_PUBLIC_KEY = 'gQFJUnGWQNKiaBsK4';
+      const EMAILJS_SERVICE_ID = 'service_sgzas1d';
+      const EMAILJS_TEMPLATE_ID = 'template_wpsy2yj';
+
+      const t = document.getElementById('themeToggle');
+      const i = document.getElementById('themeIcon');
+      const floating = document.getElementById('floatingSupport');
+      const form = document.getElementById('supportForm');
+      const statusEl = document.getElementById('supportStatus');
+      const sendBtn = document.getElementById('sendSupportBtn');
+
+      function openFeedback() {
+        window.open('https://forms.gle/31xLtR3Ek1b6p3F97', '_blank', 'noopener,noreferrer');
+      }
+
+      function setStatus(msg, kind) {
+        if (!statusEl) return;
+        statusEl.textContent = msg || '';
+        statusEl.className = 'status show';
+        statusEl.classList.remove('ok', 'error');
+        if (kind === 'ok') statusEl.classList.add('ok');
+        if (kind === 'error') statusEl.classList.add('error');
+      }
+
+      function clearStatus() {
+        if (!statusEl) return;
+        statusEl.textContent = '';
+        statusEl.className = 'status';
+      }
+
+      function applyTheme(theme) {
+        const n = theme === 'dark' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', n);
+        localStorage.setItem(k, n);
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', n === 'dark' ? '#07101d' : '#f8fafc');
+        if (i) {
+          i.innerHTML = n === 'dark'
+            ? '<path d="M12 3a1 1 0 0 1 1 1v1.05a7 7 0 0 1 5.95 5.95H20a1 1 0 1 1 0 2h-1.05A7 7 0 0 1 13 18.95V20a1 1 0 1 1-2 0v-1.05A7 7 0 0 1 5.05 13H4a1 1 0 1 1 0-2h1.05A7 7 0 0 1 11 5.05V4a1 1 0 0 1 1-1zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>'
+            : '<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>';
+        }
+      }
+
+      const saved = localStorage.getItem(k);
+      applyTheme(saved === 'dark' || saved === 'light' ? saved : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+      t?.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme') || 'light';
+        applyTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+
+      floating?.addEventListener('click', openFeedback);
+      document.querySelectorAll('[data-open-feedback]').forEach(btn => btn.addEventListener('click', openFeedback));
+
+      if (window.emailjs) {
+        window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+      }
+
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearStatus();
+
+        if (!window.emailjs) {
+          setStatus('Email support is not configured yet.', 'error');
+          return;
+        }
+
+        const fd = new FormData(form);
+        const user_name = String(fd.get('user_name') || '').trim();
+        const user_email = String(fd.get('user_email') || '').trim();
+        const message = String(fd.get('message') || '').trim();
+
+        if (user_name.length < 2 || user_email.length < 5 || message.length < 10) {
+          setStatus('Please fill all fields.', 'error');
+          return;
+        }
+
+        sendBtn.disabled = true;
+        const originalText = sendBtn.textContent;
+        sendBtn.textContent = 'Sending...';
+
+        try {
+          await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            user_name,
+            user_email,
+            message,
+            page: 'Support Page',
+            product: 'Lumira Invoicing'
+          });
+          setStatus('Message sent successfully. We’ll reply soon.', 'ok');
+          form.reset();
+        } catch (err) {
+          console.error(err);
+          setStatus('Could not send message. Please try again.', 'error');
+        } finally {
+          sendBtn.disabled = false;
+          sendBtn.textContent = originalText;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumira Invoicing — Guide</title>
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="description" content="Complete step-by-step guide for Lumira Invoicing." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    :root{
+      --bg:#f4f7fb;
+      --bg2:#eef3fb;
+      --panel:#ffffff;
+      --panel2:#fbfdff;
+      --panel3:#f6f9fe;
+      --border:#e5ebf3;
+      --border2:#d9e2ee;
+      --text:#0f172a;
+      --muted:#64748b;
+      --muted2:#94a3b8;
+      --brand:#2563eb;
+      --brand2:#7c3aed;
+      --brand3:#0ea5e9;
+      --success:#16a34a;
+      --shadow:0 24px 70px rgba(15,23,42,.08);
+      --shadow2:0 10px 30px rgba(15,23,42,.06);
+      --shadow3:0 18px 36px rgba(37,99,235,.14);
+      --max:1280px;
+      --radius:24px;
+      --radius2:18px;
+    }
+
+    html[data-theme="dark"]{
+      --bg:#07111f;
+      --bg2:#0a1627;
+      --panel:#0c1729;
+      --panel2:#101c31;
+      --panel3:#0f1a2d;
+      --border:rgba(255,255,255,.10);
+      --border2:rgba(255,255,255,.14);
+      --text:#eef4ff;
+      --muted:#a4b2ca;
+      --muted2:#7f8ea8;
+      --brand:#60a5fa;
+      --brand2:#8b5cf6;
+      --brand3:#38bdf8;
+      --success:#4ade80;
+      --shadow:0 28px 80px rgba(0,0,0,.35);
+      --shadow2:0 14px 36px rgba(0,0,0,.22);
+      --shadow3:0 18px 40px rgba(59,130,246,.20);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(96,165,250,.14), transparent 24%),
+        radial-gradient(circle at 88% 10%, rgba(139,92,246,.14), transparent 22%),
+        radial-gradient(circle at 50% 0%, rgba(14,165,233,.08), transparent 18%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+    button{cursor:pointer}
+
+    .page{
+      width:min(calc(100% - 24px),var(--max));
+      margin:0 auto;
+      padding:16px 0 28px;
+    }
+
+    .card,
+    .topbar,
+    .footer,
+    .feedback-strip{
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, color-mix(in srgb, var(--panel) 96%, transparent), var(--panel));
+      box-shadow:var(--shadow2);
+      border-radius:var(--radius);
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      margin-bottom:16px;
+      backdrop-filter:blur(18px);
+      background:color-mix(in srgb, var(--bg) 84%, transparent);
+    }
+
+    .topbar-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 16px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:16px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      display:grid;
+      place-items:center;
+      box-shadow:0 14px 30px rgba(37,99,235,.20);
+      flex:none;
+    }
+
+    .brand-mark svg{width:22px;height:22px;fill:#fff}
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.08;
+      min-width:0;
+    }
+
+    .brand-text strong{
+      font-size:1.02rem;
+      letter-spacing:-.02em;
+      white-space:nowrap;
+    }
+
+    .brand-text span{
+      font-size:.84rem;
+      color:var(--muted);
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .top-link,
+    .icon-link,
+    .theme-btn,
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:var(--panel);
+      color:var(--text);
+      font-weight:800;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+      white-space:nowrap;
+    }
+
+    .top-link.primary,
+    .btn-primary,
+    .floating{
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;
+      border-color:transparent;
+      box-shadow:var(--shadow3);
+    }
+
+    .icon-link,
+    .theme-btn{
+      width:42px;
+      padding:0;
+      border-radius:14px;
+      flex:none;
+    }
+
+    .top-link:hover,
+    .icon-link:hover,
+    .theme-btn:hover,
+    .btn:hover,
+    .chip:hover,
+    .helpful-pill:hover{
+      transform:translateY(-1px);
+    }
+.icon-link svg,
+.theme-btn svg {
+  width:18px;
+  height:18px;
+  fill:currentColor; /* ye icons filled hi rehne chahiye */
+}
+
+.floating svg {
+  width:18px;
+  height:18px;
+  fill:none;          /* 👈 yahi main fix hai */
+  stroke:currentColor;
+  stroke-width:2;
+}
+    .hero{
+      padding:26px;
+      margin-bottom:16px;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(96,165,250,.16), transparent 26%),
+        radial-gradient(circle at 90% 10%, rgba(124,58,237,.16), transparent 24%),
+        linear-gradient(180deg,var(--panel),var(--panel2));
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:auto -10% -28% auto;
+      width:340px;
+      height:340px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(96,165,250,.12), transparent 68%);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:color-mix(in srgb, var(--panel3) 84%, transparent);
+      color:var(--muted);
+      font-size:.85rem;
+      font-weight:800;
+      letter-spacing:.01em;
+      box-shadow:0 10px 24px rgba(15,23,42,.04);
+    }
+
+    .eyebrow-dot{
+      width:8px;
+      height:8px;
+      border-radius:99px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      box-shadow:0 0 0 4px color-mix(in srgb, var(--brand) 18%, transparent);
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(290px,.9fr);
+      gap:20px;
+      align-items:end;
+      margin-top:14px;
+      position:relative;
+      z-index:1;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(1.8rem, 4vw, 3.1rem);
+      line-height:1.02;
+      letter-spacing:-.05em;
+      max-width:12ch;
+    }
+
+    .hero p{
+      margin:14px 0 0;
+      color:var(--muted);
+      max-width:68ch;
+      line-height:1.7;
+      font-size:1rem;
+    }
+
+    .hero-actions{
+      margin-top:20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .search-bar{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-self:stretch;
+      justify-content:flex-end;
+    }
+
+    .search-box{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-height:58px;
+      padding:0 14px;
+      border-radius:18px;
+      border:1px solid var(--border2);
+      background:var(--panel);
+      box-shadow:0 16px 32px rgba(15,23,42,.05);
+    }
+
+    .search-icon{
+      width:18px;
+      height:18px;
+      flex:none;
+      color:var(--muted2);
+    }
+
+    .search-input{
+      width:100%;
+      border:0;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:.98rem;
+    }
+
+    .search-input::placeholder{color:var(--muted2)}
+
+    .chip-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      padding:9px 13px;
+      border-radius:999px;
+      background:var(--panel3);
+      border:1px solid var(--border);
+      color:var(--muted);
+      font-size:.88rem;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+    }
+
+    .chip:hover{
+      background:var(--panel);
+      border-color:var(--border2);
+      color:var(--text);
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+    }
+
+    .stat{
+      padding:14px 15px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg,var(--panel),var(--panel3));
+      box-shadow:0 10px 26px rgba(15,23,42,.05);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:1.06rem;
+      letter-spacing:-.03em;
+    }
+
+    .stat span{
+      display:block;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:.85rem;
+      line-height:1.35;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:280px minmax(0,1fr);
+      gap:16px;
+      align-items:start;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:92px;
+      display:grid;
+      gap:12px;
+    }
+
+    .sidebar-card{
+      padding:16px;
+    }
+
+    .sidebar-title{
+      margin:0 0 12px;
+      font-size:.78rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-weight:900;
+    }
+
+    .nav-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .nav-link{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      background:var(--panel3);
+      color:var(--text);
+      font-size:.94rem;
+      font-weight:800;
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+
+    .nav-link:hover{
+      background:var(--panel);
+      border-color:var(--border2);
+      transform:translateX(3px);
+    }
+
+    .nav-link small{
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    .btn-row{
+      display:grid;
+      gap:10px;
+    }
+
+    .btn-secondary{
+      background:var(--panel3);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    .content{
+      display:grid;
+      gap:14px;
+      min-width:0;
+    }
+
+    .section{
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .section::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:4px;
+      background:linear-gradient(90deg,var(--brand),var(--brand2),var(--brand3));
+      opacity:.95;
+    }
+
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      margin-bottom:16px;
+    }
+
+    .section h2{
+      margin:0;
+      font-size:1.18rem;
+      letter-spacing:-.03em;
+    }
+
+    .section p{
+      margin:8px 0 0;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .section-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 11px;
+      border-radius:999px;
+      background:color-mix(in srgb, var(--brand) 10%, transparent);
+      color:var(--brand);
+      border:1px solid color-mix(in srgb, var(--brand) 20%, transparent);
+      font-size:.8rem;
+      font-weight:900;
+      white-space:nowrap;
+      flex:none;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .help-item{
+      padding:16px;
+      border-radius:18px;
+      background:linear-gradient(180deg,var(--panel),color-mix(in srgb, var(--panel3) 72%, transparent));
+      border:1px solid var(--border);
+      box-shadow:0 10px 24px rgba(15,23,42,.04);
+      min-width:0;
+    }
+
+    .help-item h3{
+      margin:0 0 8px;
+      font-size:.98rem;
+      letter-spacing:-.02em;
+    }
+
+    .help-item p,
+    .help-item li{
+      color:color-mix(in srgb, var(--text) 82%, var(--muted));
+      line-height:1.65;
+      font-size:.95rem;
+    }
+
+    .help-item ul{
+      margin:8px 0 0 18px;
+      padding:0;
+    }
+
+    .note{
+      margin-top:12px;
+      padding:14px 15px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:color-mix(in srgb, var(--panel3) 82%, transparent);
+      color:var(--muted);
+      line-height:1.65;
+      font-size:.95rem;
+    }
+
+    .faq{
+      display:grid;
+      gap:10px;
+    }
+
+    details.faq-item{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 8px 20px rgba(15,23,42,.03);
+    }
+
+    details.faq-item summary{
+      list-style:none;
+      cursor:pointer;
+      padding:14px 16px;
+      font-weight:850;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    details.faq-item summary::-webkit-details-marker{display:none}
+
+    details.faq-item summary::after{
+      content:"+";
+      color:var(--muted);
+      font-weight:900;
+      font-size:1.1rem;
+    }
+
+    details.faq-item[open] summary::after{
+      content:"–";
+    }
+
+    details.faq-item .faq-body{
+      padding:0 16px 16px;
+      color:color-mix(in srgb, var(--text) 80%, var(--muted));
+      line-height:1.65;
+      font-size:.95rem;
+    }
+
+    .feedback-strip{
+      padding:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(96,165,250,.10), transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(124,58,237,.10), transparent 28%),
+        var(--panel);
+    }
+
+    .feedback-strip h3{
+      margin:0;
+      font-size:1.02rem;
+      letter-spacing:-.02em;
+    }
+
+    .feedback-strip p{
+      margin:6px 0 0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .footer{
+      margin-top:14px;
+      padding:16px 18px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .footer small{color:var(--muted)}
+    .footer-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links a{
+      color:var(--brand);
+      font-weight:850;
+    }
+
+    .floating{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:40;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border:0;
+      border-radius:999px;
+      color:#fff;
+      font-weight:900;
+      box-shadow:0 18px 36px rgba(37,99,235,.28);
+    }
+
+    .hidden{display:none !important}
+
+    @media (max-width:1080px){
+      .layout,
+      .hero-grid,
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+
+      .hero h1{
+        max-width:none;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:720px){
+      .page{
+        width:min(calc(100% - 16px),var(--max));
+        padding-top:10px;
+      }
+
+      .topbar,
+      .hero,
+      .section,
+      .footer,
+      .feedback-strip{
+        border-radius:20px;
+      }
+
+      .topbar-inner,
+      .hero,
+      .section,
+      .footer,
+      .feedback-strip{
+        padding-left:14px;
+        padding-right:14px;
+      }
+
+      .section{
+        padding-top:20px;
+        padding-bottom:20px;
+      }
+
+      .top-actions{
+        width:100%;
+      }
+
+      .top-link.primary{
+        width:100%;
+      }
+
+      .hero-actions{
+        width:100%;
+      }
+
+      .search-bar{
+        width:100%;
+      }
+
+      .floating{
+        right:12px;
+        bottom:12px;
+        padding:11px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="help.html">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2zm0 2.2L6 7v7.8l6 3.4 6-3.4V7l-6-2.8zM11 8h2v5h-2V8zm0 6h2v2h-2v-2z"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <strong>Lumira Invoicing</strong>
+            <span>Premium Help Center</span>
+          </div>
+        </a>
+
+        <div class="top-actions">
+          <a class="top-link primary" href="editor.html">Open Editor</a>
+          <a class="icon-link" href="help.html" aria-label="Home">
+            <svg viewBox="0 0 24 24"><path d="M12 2 2 10h3v10h6v-6h2v6h6V10h3z"/></svg>
+          </a>
+          <a class="icon-link" href="help-support.html" aria-label="Support">
+            <svg viewBox="0 0 24 24"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.58 1.45 4.88 3.72 6.36L5 21l3.88-2.07c.97.22 2.02.34 3.12.34 5.52 0 10-3.58 10-8s-4.48-8-10-8zm-4 9H6v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>
+          </a>
+          <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme">
+            <svg id="themeIcon" viewBox="0 0 24 24">
+              <path d="M12 3a1 1 0 0 1 1 1v1.05a7 7 0 0 1 5.95 5.95H20a1 1 0 1 1 0 2h-1.05A7 7 0 0 1 13 18.95V20a1 1 0 1 1-2 0v-1.05A7 7 0 0 1 5.05 13H4a1 1 0 1 1 0-2h1.05A7 7 0 0 1 11 5.05V4a1 1 0 0 1 1-1zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero card">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> Designed for fast self-serve support</span>
+
+      <div class="hero-grid">
+        <div>
+          <h1>Master Lumira Invoicing with a clean premium guide.</h1>
+          <p>
+            Everything you need to understand the editor, templates, item rows, logo upload, inline editing, export flow,
+            and common fixes — organized in a polished SaaS-style help layout.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="editor.html">Start Invoicing</a>
+            <a class="btn btn-secondary" href="help-support.html">Contact Support</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>Fast setup</strong>
+              <span>Start creating invoices in minutes.</span>
+            </div>
+            <div class="stat">
+              <strong>Clean exports</strong>
+              <span>PDF and image output made simple.</span>
+            </div>
+            <div class="stat">
+              <strong>Premium UI</strong>
+              <span>Polished help experience with a SaaS look.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M10 4a6 6 0 104.47 10.03l4.25 4.25 1.41-1.41-4.25-4.25A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/>
+            </svg>
+            <input id="helpSearch" class="search-input" type="search" placeholder="Search the guide..." />
+          </div>
+
+          <div class="chip-row">
+            <button class="chip" data-filter="start" type="button">Getting started</button>
+            <button class="chip" data-filter="items" type="button">Items</button>
+            <button class="chip" data-filter="export" type="button">Export</button>
+            <button class="chip" data-filter="logo" type="button">Logo</button>
+            <button class="chip" data-filter="edit" type="button">Inline edit</button>
+            <button class="chip" data-filter="issues" type="button">Troubleshooting</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="card sidebar-card">
+          <div class="sidebar-title">Navigation</div>
+          <div class="nav-list">
+            <a class="nav-link" href="#start">Getting Started <small>01</small></a>
+            <a class="nav-link" href="#items">Items <small>02</small></a>
+            <a class="nav-link" href="#export">Export <small>03</small></a>
+            <a class="nav-link" href="#logo">Logo Upload <small>04</small></a>
+            <a class="nav-link" href="#edit">Inline Editing <small>05</small></a>
+            <a class="nav-link" href="#issues">Troubleshooting <small>06</small></a>
+          </div>
+        </div>
+
+        <div class="card sidebar-card">
+          <div class="sidebar-title">Quick actions</div>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="editor.html">Open Editor</a>
+            <a class="btn btn-secondary" href="help-support.html">Contact Support</a>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="card section anchor" id="start" data-topic="start">
+          <div class="section-header">
+            <div>
+              <h2>Getting Started</h2>
+              <p>Open the editor, choose a template, fill the details, and watch the live preview update instantly.</p>
+            </div>
+            <span class="section-badge">Core flow</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="help-item">
+              <h3>1. Open Editor</h3>
+              <p>Start a new invoice instantly from the dashboard.</p>
+            </div>
+            <div class="help-item">
+              <h3>2. Choose Template</h3>
+              <p>Select the layout that best fits your brand style.</p>
+            </div>
+            <div class="help-item">
+              <h3>3. Fill Details</h3>
+              <p>Add business, client, invoice, and payment information.</p>
+            </div>
+            <div class="help-item">
+              <h3>4. Export</h3>
+              <p>Download PDF or image in one click when ready.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section anchor" id="items" data-topic="items">
+          <div class="section-header">
+            <div>
+              <h2>Items</h2>
+              <p>Keep item rows short, clear, and readable so the invoice stays premium and professional.</p>
+            </div>
+            <span class="section-badge">Line items</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="help-item">
+              <h3>Row Structure</h3>
+              <ul>
+                <li>Description</li>
+                <li>Quantity</li>
+                <li>Unit price</li>
+                <li>Line total</li>
+              </ul>
+            </div>
+            <div class="help-item">
+              <h3>Best Practices</h3>
+              <ul>
+                <li>One service per row</li>
+                <li>Under 80 characters per description</li>
+                <li>Keep pricing simple and clean</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section anchor" id="export" data-topic="export">
+          <div class="section-header">
+            <div>
+              <h2>Export</h2>
+              <p>Use the export options for quick delivery to clients or for your own records.</p>
+            </div>
+            <span class="section-badge">Delivery</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="help-item">
+              <h3>PDF</h3>
+              <p>Perfect for client delivery, printing, and formal records.</p>
+            </div>
+            <div class="help-item">
+              <h3>Image</h3>
+              <p>Ideal for quick sharing via chat, email, or social platforms.</p>
+            </div>
+          </div>
+
+          <div class="note">
+            Keep long notes short before exporting. That helps the final output stay neat and avoids layout shifts.
+          </div>
+        </section>
+
+        <section class="card section anchor" id="logo" data-topic="logo">
+          <div class="section-header">
+            <div>
+              <h2>Logo Upload</h2>
+              <p>Use a transparent PNG or WEBP for the cleanest result across all templates.</p>
+            </div>
+            <span class="section-badge">Branding</span>
+          </div>
+
+          <div class="grid-2">
+            <div class="help-item">
+              <h3>Recommended Formats</h3>
+              <p>PNG or WEBP works best for sharp logo rendering.</p>
+            </div>
+            <div class="help-item">
+              <h3>Optimal Size</h3>
+              <p>Keep the file light and balanced so it fits the header nicely.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section anchor" id="edit" data-topic="edit">
+          <div class="section-header">
+            <div>
+              <h2>Inline Editing</h2>
+              <p>Click any text directly in the preview to edit instantly. The form and preview stay synced.</p>
+            </div>
+            <span class="section-badge">Live edit</span>
+          </div>
+
+          <div class="help-item">
+            <h3>Editing Tips</h3>
+            <p>
+              Keep the preview copy concise and structured. Short titles, clean labels, and simple phrasing make the invoice
+              look more premium.
+            </p>
+          </div>
+        </section>
+
+        <section class="card section anchor" id="issues" data-topic="issues">
+          <div class="section-header">
+            <div>
+              <h2>Troubleshooting</h2>
+              <p>Quick fixes for the most common issues.</p>
+            </div>
+            <span class="section-badge">Help</span>
+          </div>
+
+          <div class="faq">
+            <details class="faq-item">
+              <summary>Preview is blank</summary>
+              <div class="faq-body">
+                Select a template and fill the main fields first. The preview needs at least one template and basic data to render properly.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>PDF does not match preview</summary>
+              <div class="faq-body">
+                Keep text short and avoid very long notes. Excess content can change spacing and affect the final exported layout.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary>Logo is missing</summary>
+              <div class="faq-body">
+                Upload a PNG or WEBP and make sure the file size is reasonable. Transparent logos usually look the cleanest.
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="feedback-strip">
+          <div>
+            <h3>Feedback improves Lumira.</h3>
+            <p>Your input helps us build a better product and a smoother experience.</p>
+          </div>
+          <a class="btn btn-primary" href="help-support.html">Send Feedback</a>
+        </section>
+
+        <footer class="footer">
+          <small>© Lumira Invoicing Guide</small>
+          <div class="footer-links">
+            <a href="help.html">Home</a>
+            <a href="help-support.html">Support</a>
+            <a href="editor.html">Editor</a>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+<button class="floating" id="floatingSupport" type="button">  
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" 
+       stroke-linecap="round" stroke-linejoin="round">  
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>  
+  Feedback  
+</button>
+
+  <script>
+    (function() {
+      const themeKey = 'lumira-theme';
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const searchInput = document.getElementById('helpSearch');
+      const sections = [...document.querySelectorAll('[data-topic]')];
+      const chips = [...document.querySelectorAll('.chip')];
+
+      function normalize(str) {
+        return String(str || '').toLowerCase().trim();
+      }
+
+      function filterAndShow(query = '') {
+        query = normalize(query);
+
+        sections.forEach(sec => {
+          const topic = normalize(sec.dataset.topic);
+          const text = normalize(sec.textContent);
+          const match = !query || text.includes(query) || topic.includes(query);
+          sec.classList.toggle('hidden', !match);
+        });
+      }
+
+      function applyTheme(theme) {
+        const resolved = theme === 'dark' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', resolved);
+        localStorage.setItem(themeKey, resolved);
+
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', resolved === 'dark' ? '#07111f' : '#f8fafc');
+
+        if (themeIcon) {
+          themeIcon.innerHTML = resolved === 'dark'
+            ? '<path d="M12 3a1 1 0 0 1 1 1v1.05a7 7 0 0 1 5.95 5.95H20a1 1 0 1 1 0 2h-1.05A7 7 0 0 1 13 18.95V20a1 1 0 1 1-2 0v-1.05A7 7 0 0 1 5.05 13H4a1 1 0 1 1 0-2h1.05A7 7 0 0 1 11 5.05V4a1 1 0 0 1 1-1zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>'
+            : '<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>';
+        }
+      }
+
+      const savedTheme = localStorage.getItem(themeKey);
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : (prefersDark ? 'dark' : 'light'));
+
+      themeToggle?.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+
+      searchInput?.addEventListener('input', e => {
+        filterAndShow(e.target.value);
+      });
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const filterValue = chip.dataset.filter || '';
+          if (searchInput) searchInput.value = '';
+          filterAndShow(filterValue);
+
+          const target = document.querySelector(`[data-topic="${filterValue}"]`);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      const openFeedback = () => {
+        window.open('https://your-feedback-form-url.com', '_blank', 'noopener,noreferrer');
+      };
+
+      document.getElementById('floatingSupport')?.addEventListener('click', openFeedback);
+
+      filterAndShow('');
+    })();
+  </script>
+</body>
+</html>

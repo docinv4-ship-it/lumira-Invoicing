@@ -1,0 +1,1172 @@
+<!DOCTYPE html><html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumira Invoicing — Editor</title>
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="description" content="A clean WYSIWYG invoice editor with live preview and fast export." />
+  <meta name="robots" content="index,follow" />  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='lumiraGrad' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='4' width='40' height='40' rx='12' fill='url(%23lumiraGrad)'/%3E%3Cpath d='M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M26 14v6h6' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3Cline x1='18' y1='26' x2='30' y2='26' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='18' y1='30' x2='26' y2='30' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
+  <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">  <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #f5f7fb;
+      --bg-soft: #eef2f7;
+      --panel: #ffffff;
+      --panel-2: #f9fbff;
+      --border: #e5e7eb;
+      --border-strong: #d7dce5;
+      --text: #0f172a;
+      --muted: #64748b;
+      --muted-2: #94a3b8;
+      --brand: #2563eb;
+      --brand-2: #7c3aed;
+      --ok: #16a34a;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
+      --radius: 20px;
+      --radius-lg: 24px;
+      --max: 1440px;
+      --preview-scale: 1;
+      --preview-base-width: 595px;
+      --preview-base-height: 842px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #07111f;
+      --bg-soft: #0b1728;
+      --panel: rgba(255, 255, 255, 0.06);
+      --panel-2: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.10);
+      --border-strong: rgba(96, 165, 250, 0.20);
+      --text: #edf4ff;
+      --muted: #a5b4cc;
+      --muted-2: #73819d;
+      --brand: #60a5fa;
+      --brand-2: #8b5cf6;
+      --ok: #22c55e;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      scroll-padding-top: 110px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(96, 165, 250, 0.12), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.10), transparent 25%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+
+    .page {
+      width: min(calc(100% - 24px), var(--max));
+      margin: 0 auto;
+      padding: 14px 0 24px;
+      position: relative;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      margin-bottom: 14px;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+      flex: 0 0 auto;
+      overflow: hidden;
+    }
+
+    .brand-mark svg {
+      width: 40px;
+      height: 40px;
+      display: block;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.08;
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .top-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      border-color: var(--border-strong);
+      background: var(--panel-2);
+    }
+
+    .theme-toggle {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      flex: 0 0 auto;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--panel-2);
+      border-color: var(--border-strong);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .form-panel { min-width: 0; }
+
+    .right-column {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+      position: sticky;
+      top: 92px;
+      align-self: start;
+    }
+
+    .section-head,
+    .preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+      letter-spacing: -0.03em;
+      line-height: 1.06;
+    }
+
+    .preview-head strong { font-size: 0.98rem; letter-spacing: -0.01em; }
+    .preview-head span { color: var(--muted); font-size: 0.86rem; }
+
+    .preview-shell {
+      padding: 10px;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: calc(var(--preview-base-height) * var(--preview-scale) + 12px);
+    }
+
+    .preview-stage {
+      width: calc(var(--preview-base-width) * var(--preview-scale));
+      height: calc(var(--preview-base-height) * var(--preview-scale));
+      position: relative;
+      flex: 0 0 auto;
+      margin: 0 auto;
+      background: #ffffff;
+    }
+
+    #temp-render {
+      width: var(--preview-base-width);
+      min-width: var(--preview-base-width);
+      min-height: var(--preview-base-height);
+      background: #fff;
+      border: 1px solid #edf2f7;
+      border-radius: 16px;
+      overflow: visible;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+      margin: 0;
+      transform: none;
+      zoom: var(--preview-scale);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      backface-visibility: hidden;
+    }
+
+    #temp-render .invoice-template {
+      width: 595px !important;
+      min-width: 595px !important;
+      max-width: none !important;
+      margin: 0 !important;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    .sidebar-panel {
+      display: grid;
+      gap: 12px;
+    }
+
+    .sidebar-section {
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+    }
+
+    .sidebar-title {
+      margin: 0 0 10px 0;
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 800;
+      padding: 12px 14px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+    }
+
+    .btn-secondary {
+      background: var(--bg-soft);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #fb7185, #f97316);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(249,115,22,0.14);
+    }
+
+    .status-line {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .template-hidden { display: none !important; }
+
+    #invoice-form {
+      display: block;
+      overflow: visible;
+    }
+
+    #invoice-form .form-section {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+      margin-bottom: 14px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+      align-items: start;
+      overflow: visible;
+    }
+
+    #invoice-form .full-span { grid-column: 1 / -1; }
+
+    #invoice-form .section-title {
+      grid-column: 1 / -1;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 2px;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    #invoice-form .field-row {
+      margin: 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #invoice-form .field-row label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    #invoice-form .field-row input,
+    #invoice-form .field-row textarea,
+    #invoice-form .field-row select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      box-sizing: border-box;
+      font-size: 14px;
+      line-height: 1.45;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
+    }
+
+    #invoice-form .field-row input::placeholder,
+    #invoice-form .field-row textarea::placeholder {
+      color: var(--muted-2);
+    }
+
+    #invoice-form .field-row input:focus,
+    #invoice-form .field-row textarea:focus,
+    #invoice-form .field-row select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.14);
+    }
+
+    #invoice-form .field-row textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    #invoice-form .logo-section {
+      background: var(--panel);
+      border-color: #dbeafe;
+    }
+
+    #invoice-form .items-section {
+      background: var(--panel);
+    }
+
+    #items-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      table-layout: fixed;
+    }
+
+    #items-table thead th {
+      background: rgba(15, 23, 42, 0.04);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    #items-table th,
+    #items-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+      vertical-align: top;
+    }
+
+    #items-table th:first-child,
+    #items-table td:first-child {
+      width: 42%;
+      min-width: 320px;
+    }
+
+    #items-table th:nth-child(2),
+    #items-table td:nth-child(2) {
+      width: 16%;
+      min-width: 90px;
+    }
+
+    #items-table th:nth-child(3),
+    #items-table td:nth-child(3) {
+      width: 16%;
+      min-width: 110px;
+    }
+
+    #items-table th:nth-child(4),
+    #items-table td:nth-child(4) {
+      width: 18%;
+      min-width: 130px;
+    }
+
+    #items-table th:nth-child(5),
+    #items-table td:nth-child(5) {
+      width: 8%;
+      min-width: 92px;
+    }
+
+    #items-table tbody tr:last-child td { border-bottom: 0; }
+
+    #items-table input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.30);
+      background: var(--panel);
+      color: var(--text);
+      outline: none;
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    #items-table input[data-field="line_total"],
+    #items-table td:nth-child(5) input {
+      font-weight: 800;
+      color: #0f172a;
+      background: linear-gradient(180deg, #ffffff, #f8fbff);
+      border-color: rgba(37, 99, 235, 0.18);
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: block !important;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #items-table td:first-child input,
+    #items-table td:first-child textarea {
+      min-width: 280px;
+    }
+
+    #items-table input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.12);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+    }
+
+    .invoice-inline-edit {
+      outline: none;
+      border-radius: 6px;
+      padding: 0 2px;
+      cursor: text;
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .invoice-inline-edit:focus {
+      background: rgba(37, 99, 235, 0.08);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.10);
+    }
+
+    .mobile-dock { display: none; }
+
+    .feedback-fab {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 150;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+
+    .feedback-fab:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.4);
+    }
+
+    .feedback-fab svg {
+      width: 19px;
+      height: 19px;
+      stroke: #fff;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    .splash-note {
+      display: none;
+    }
+
+    @media (max-width: 1180px) {
+      .workspace { grid-template-columns: 1fr; }
+      .right-column { position: static; }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(calc(100% - 16px), var(--max));
+        padding-top: 10px;
+        padding-bottom: 100px;
+      }
+
+      .topbar {
+        border-radius: 18px;
+      }
+
+      .topbar-inner {
+        padding: 10px 12px;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .brand {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+
+      .brand-text strong {
+        font-size: 0.92rem;
+        line-height: 1.1;
+      }
+
+      .brand-text span {
+        display: none;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      .preview-shell {
+        padding: 8px;
+        justify-content: center;
+        background: #fff;
+      }
+
+      .preview-stage {
+        background: #fff;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: nowrap;
+        width: auto;
+        min-width: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex: 0 0 auto;
+      }
+
+      .top-actions::-webkit-scrollbar { display: none; }
+
+      .top-link,
+      .theme-toggle {
+        height: 32px;
+        min-height: 32px;
+        padding: 0 10px;
+        font-size: 11px;
+        border-radius: 999px;
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      .theme-toggle {
+        width: 32px;
+        padding: 0;
+      }
+
+      #invoice-form .form-section {
+        grid-template-columns: 1fr;
+      }
+
+      #invoice-form .full-span { grid-column: auto; }
+
+      #invoice-form .field-row textarea {
+        min-height: 96px;
+      }
+
+      #items-table {
+        min-width: 0;
+      }
+
+      #items-table thead {
+        display: none;
+      }
+
+      #items-table,
+      #items-table tbody,
+      #items-table tr,
+      #items-table td {
+        display: block;
+        width: 100%;
+      }
+
+      #items-table tr {
+        margin-bottom: 12px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--panel);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+      }
+
+      #items-table td {
+        padding: 8px 0;
+        border-bottom: 0;
+      }
+
+      #items-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      #items-table input,
+      #items-table td:first-child input,
+      #items-table td:first-child textarea {
+        min-width: 0 !important;
+        width: 100%;
+      }
+
+      #items-table td:last-child button {
+        width: 100%;
+      }
+
+      .feedback-fab {
+        right: 16px;
+        bottom: 70px;
+        padding: 12px 18px;
+        font-size: 0.9rem;
+      }
+
+      .mobile-dock {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 10px;
+        z-index: 140;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        padding: 6px;
+        border-radius: 16px;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .dock-btn {
+        height: 38px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--panel);
+        color: var(--text);
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .dock-btn.is-active {
+        background: linear-gradient(135deg, var(--brand), var(--brand-2));
+        color: #fff;
+        border-color: transparent;
+      }
+
+      .page[data-mobile-mode="form"] .right-column,
+      .page[data-mobile-mode="preview"] .form-panel {
+        display: none !important;
+      }
+
+      .page[data-mobile-mode="preview"] .preview-shell {
+        min-height: 85vh !important;
+        padding: 16px 8px;
+        background: #ffffff;
+        align-items: flex-start;
+      }
+
+      .page[data-mobile-mode="preview"] .preview-stage {
+        width: 100% !important;
+        max-width: none;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15) !important;
+      }
+
+      .page[data-mobile-mode="preview"] .right-column {
+        position: static !important;
+        display: grid !important;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page { width: min(calc(100% - 12px), var(--max)); }
+
+      .title { font-size: 1.18rem; }
+
+      .preview-head {
+        align-items: flex-start;
+      }
+
+      .card { padding: 12px; }
+
+      .feedback-fab {
+        right: 12px;
+        bottom: 70px;
+        padding: 11px 16px;
+      }
+
+      #items-table input[data-field="line_total"],
+      #items-table td:nth-child(5) input {
+        font-size: 12px;
+      }
+    }
+  </style></head>
+<body>
+  <div class="page" id="top" data-mobile-mode="form">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="Lumira Invoicing home">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="lumiraGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#2563eb"/>
+                  <stop offset="100%" stop-color="#3b82f6"/>
+                </linearGradient>
+              </defs>
+              <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#lumiraGrad)"/>
+              <path d="M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                    stroke-linejoin="round"/>
+              <path d="M26 14v6h6"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                    stroke-linejoin="round"/>
+              <line x1="18" y1="26" x2="30" y2="26" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <line x1="18" y1="30" x2="26" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <strong>Lumira Invoicing</strong>
+          </div>
+        </a><div class="top-actions">
+      <a class="top-link" href="help.html">Help &amp; Guide</a>
+      <a class="top-link" href="templates.html">Change Template</a>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Switch theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="workspace">
+  <section class="card form-panel">
+    <div class="section-head">
+      <div>
+        <h1 class="title">Invoice editor</h1>
+      </div>
+    </div>
+
+    <div id="invoice-form"></div>
+    <div id="status-line" class="status-line"></div>
+
+    <div class="template-hidden">
+      <label for="template-select">Template</label>
+      <select id="template-select">
+        <option value="1">1. Golden Blue Classic</option>
+        <option value="2">2. Modern Triangles</option>
+        <option value="3">3. Teal Corporate</option>
+        <option value="4">4. Curve Dark</option>
+        <option value="5">5. Royale Gold</option>
+        <option value="6">6. Vibrant Gradient</option>
+        <option value="7">7. Purple Gold</option>
+        <option value="8">8. Black &amp; Gold</option>
+        <option value="9">9. Rust Modern</option>
+        <option value="10">10. Clean Minimal</option>
+        <option value="11">11. Dark Professional</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="right-column">
+    <section class="card preview-panel">
+      <div class="preview-head">
+        <div>
+          <strong>Live Preview</strong>
+        </div>
+      </div>
+
+      <div class="preview-shell">
+        <div class="preview-stage">
+          <div id="temp-render"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card sidebar-panel">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Actions</div>
+        <button id="preview-btn" class="btn btn-secondary" type="button">Refresh Preview</button>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Export</div>
+        <div class="actions">
+          <button id="download-btn" class="btn btn-primary" type="button">Download PDF</button>
+          <button id="download-image-btn" class="btn btn-accent" type="button">Download Image</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+  </div>  <div class="mobile-dock" aria-label="Mobile editor actions">
+    <button id="mobile-form-btn" class="dock-btn is-active" type="button">Form</button>
+    <button id="mobile-preview-btn" class="dock-btn" type="button">Preview</button>
+    <button id="mobile-refresh-btn" class="dock-btn" type="button">Refresh</button>
+  </div>  <button id="feedbackFab" class="feedback-fab" type="button" title="Give Feedback" aria-label="Give Feedback">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    Feedback
+  </button>  <script src="config.js"></script>  <script src="templates/template1.js"></script>  <script src="templates/template2.js"></script>  <script src="templates/template3.js"></script>  <script src="templates/template4.js"></script>  <script src="templates/template5.js"></script>  <script src="templates/template6.js"></script>  <script src="templates/template7.js"></script>  <script src="templates/template8.js"></script>  <script src="templates/template9.js"></script>  <script src="templates/template10.js"></script>  <script src="templates/template11.js"></script>  <script src="modules/state.js"></script>  <script src="modules/utils.js"></script>  <script src="modules/calculations.js"></script>  <script src="modules/form-builder.js"></script>  <script src="modules/template-render.js"></script>  <script src="editor-core.js"></script>  <script src="editor.js"></script>  <script>
+    (function () {
+      const feedbackUrl = 'https://forms.gle/31xLtR3Ek1b6p3F97';
+      const feedbackFab = document.getElementById('feedbackFab');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      const root = document.documentElement;
+      const previewShell = document.querySelector('.preview-shell');
+      const pageContainer = document.getElementById('top');
+
+      if (feedbackFab) {
+        feedbackFab.addEventListener('click', () => {
+          window.open(feedbackUrl, '_blank', 'noopener,noreferrer');
+        });
+      }
+
+      function applyTheme(theme) {
+        const nextTheme = theme === 'dark' ? 'dark' : 'light';
+        root.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('lumira-theme', nextTheme);
+
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute('content', nextTheme === 'dark' ? '#07111f' : '#f8fafc');
+        }
+
+        if (themeIcon) {
+          themeIcon.innerHTML = nextTheme === 'dark'
+            ? `<circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>`
+            : `<path d="M21 12.79A9 9 0 1 1 12.21 3 7 7 0 0 0 21 12.79z"></path>`;
+        }
+      }
+
+      function initTheme() {
+        const saved = localStorage.getItem('lumira-theme');
+        applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+      }
+
+      function parseAmount(value) {
+        const raw = String(value ?? '').trim();
+        if (!raw) return 0;
+        const cleaned = raw.replace(/[^0-9.-]/g, '');
+        const number = Number(cleaned);
+        return Number.isFinite(number) ? number : 0;
+      }
+
+      function formatAmount(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return '0';
+        const fixed = Math.round((n + Number.EPSILON) * 100) / 100;
+        return String(fixed.toFixed(2)).replace(/\.00$/, '');
+      }
+
+      function syncLineTotals() {
+        const table = document.getElementById('items-table');
+        if (!table) return;
+
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach((row) => {
+          const qtyInput = row.querySelector('input[data-field="qty"], input[data-field="quantity"]');
+          const priceInput = row.querySelector('input[data-field="unit_price"]');
+          const totalInput = row.querySelector('input[data-field="line_total"]');
+
+          if (!totalInput) return;
+
+          totalInput.style.setProperty('opacity', '1', 'important');
+          totalInput.style.setProperty('visibility', 'visible', 'important');
+          totalInput.style.setProperty('display', 'block', 'important');
+          totalInput.readOnly = true;
+          totalInput.tabIndex = -1;
+
+          const qty = parseAmount(qtyInput ? qtyInput.value : 0);
+          const price = parseAmount(priceInput ? priceInput.value : 0);
+          const computed = qty * price;
+          const formatted = formatAmount(computed);
+
+          if (totalInput.value !== formatted) {
+            totalInput.value = formatted;
+          }
+        });
+      }
+
+      function bindLineTotalSync() {
+        if (window.__lumiraLineTotalSyncBound) return;
+        window.__lumiraLineTotalSyncBound = true;
+
+        document.addEventListener('input', (event) => {
+          if (event.target.closest && event.target.closest('#items-table')) {
+            requestAnimationFrame(syncLineTotals);
+          }
+        }, true);
+
+        document.addEventListener('change', (event) => {
+          if (event.target.closest && event.target.closest('#items-table')) {
+            requestAnimationFrame(syncLineTotals);
+          }
+        }, true);
+
+        const observer = new MutationObserver(() => {
+          requestAnimationFrame(syncLineTotals);
+        });
+
+        const formRoot = document.getElementById('invoice-form');
+        if (formRoot) {
+          observer.observe(formRoot, { childList: true, subtree: true });
+        }
+      }
+
+      function fitPreviewScale() {
+        if (!previewShell) return;
+
+        const isMobile = window.innerWidth <= 760;
+        const baseWidth = 595;
+        const shellWidth = previewShell.clientWidth || window.innerWidth;
+        const availableWidth = Math.max(320, shellWidth - 16);
+
+        const scale = isMobile ? Math.min(1, availableWidth / baseWidth) : 1;
+        root.style.setProperty('--preview-scale', String(scale));
+      }
+
+      let resizeTick = 0;
+      function scheduleFit() {
+        if (resizeTick) return;
+        resizeTick = window.requestAnimationFrame(() => {
+          resizeTick = 0;
+          fitPreviewScale();
+        });
+      }
+
+      themeToggle?.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') || 'light';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+        scheduleFit();
+      });
+
+      initTheme();
+      fitPreviewScale();
+      bindLineTotalSync();
+
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          syncLineTotals();
+          fitPreviewScale();
+        }, 80);
+        setTimeout(syncLineTotals, 300);
+        setTimeout(syncLineTotals, 800);
+      });
+
+      const previewObserver = new MutationObserver(() => {
+        scheduleFit();
+        syncLineTotals();
+      });
+
+      const tempRender = document.getElementById('temp-render');
+      if (tempRender) {
+        previewObserver.observe(tempRender, { childList: true, subtree: true });
+      }
+
+      window.addEventListener('resize', scheduleFit, { passive: true });
+      window.addEventListener('orientationchange', () => setTimeout(scheduleFit, 120));
+
+      function initMobileDock() {
+        const formBtn = document.getElementById('mobile-form-btn');
+        const previewBtn = document.getElementById('mobile-preview-btn');
+        const refreshBtn = document.getElementById('mobile-refresh-btn');
+
+        if (!pageContainer || !formBtn || !previewBtn) return;
+
+        function setMobileMode(mode) {
+          pageContainer.setAttribute('data-mobile-mode', mode);
+          formBtn.classList.toggle('is-active', mode === 'form');
+          previewBtn.classList.toggle('is-active', mode === 'preview');
+
+          if (mode === 'preview') {
+            requestAnimationFrame(() => {
+              fitPreviewScale();
+              syncLineTotals();
+            });
+          }
+        }
+
+        formBtn.addEventListener('click', () => setMobileMode('form'));
+        previewBtn.addEventListener('click', () => setMobileMode('preview'));
+
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', () => {
+            const mainRefresh = document.getElementById('preview-btn');
+            if (mainRefresh) mainRefresh.click();
+            else fitPreviewScale();
+            syncLineTotals();
+          });
+        }
+
+        if (window.innerWidth <= 760) {
+          setMobileMode('form');
+        }
+
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 760) {
+            pageContainer.removeAttribute('data-mobile-mode');
+          } else {
+            if (!pageContainer.getAttribute('data-mobile-mode')) {
+              pageContainer.setAttribute('data-mobile-mode', 'form');
+            }
+          }
+        });
+      }
+
+      initMobileDock();
+
+      console.log('%c✅ Lumira Invoicing Editor ready — mobile/desktop SaaS layout improved.', 'color:#2563eb; font-weight:700;');
+    })();
+  </script></body>
+</html>

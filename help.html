@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumira Invoicing — Help Center</title>
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="description" content="Help center for Lumira Invoicing." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    :root{--bg:#f6f8fc;--panel:#fff;--panel2:#fbfdff;--panel3:#f8fbff;--border:#e6ebf2;--border2:#d8e0ea;--text:#0f172a;--muted:#64748b;--brand:#2563eb;--brand2:#7c3aed;--shadow:0 18px 50px rgba(15,23,42,.08);--shadow2:0 10px 24px rgba(15,23,42,.06);--max:1240px}
+    html[data-theme="dark"]{--bg:#07101d;--panel:#0c1628;--panel2:#0f1a2f;--panel3:#0e1a2d;--border:rgba(255,255,255,.10);--border2:rgba(255,255,255,.16);--text:#edf4ff;--muted:#a6b3cb;--brand:#60a5fa;--brand2:#8b5cf6;--shadow:0 24px 70px rgba(0,0,0,.34);--shadow2:0 14px 34px rgba(0,0,0,.18)}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 8% 0%,rgba(96,165,250,.12),transparent 24%),radial-gradient(circle at 88% 10%,rgba(139,92,246,.12),transparent 22%),linear-gradient(180deg,var(--bg),var(--bg));overflow-x:hidden}
+    a{color:inherit;text-decoration:none} button{font:inherit;cursor:pointer}
+    .page{width:min(calc(100% - 24px),var(--max));margin:0 auto;padding:16px 0 28px}
+    .topbar,.card,.footer,.feedback-strip{border:1px solid var(--border);background:var(--panel);box-shadow:var(--shadow2);border-radius:22px}
+    .topbar{position:sticky;top:0;z-index:10;margin-bottom:16px;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+    .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px}.brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;box-shadow:0 12px 26px rgba(37,99,235,.18)}.brand-mark svg{width:22px;height:22px;fill:#fff}.brand-text{display:flex;flex-direction:column;line-height:1.1}.brand-text strong{font-size:1rem}.brand-text span{font-size:.82rem;color:var(--muted)}
+    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.top-link,.icon-link,.theme-btn{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-weight:700;white-space:nowrap}.top-link.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}.icon-link,.theme-btn{width:40px;padding:0;border-radius:12px}.top-link:hover,.icon-link:hover,.theme-btn:hover,.btn:hover,.chip:hover,.helpful-pill:hover{transform:translateY(-1px)}
+    .hero{padding:22px}.hero h1{margin:0;font-size:clamp(1.8rem,4vw,3.4rem);letter-spacing:-.05em;line-height:.98;max-width:12ch}.hero p{margin:12px 0 18px;color:var(--muted);max-width:70ch;line-height:1.7}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:14px;border:0;font-weight:800}.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 12px 24px rgba(37,99,235,.18)}.btn-secondary{background:var(--panel3);color:var(--text);border:1px solid var(--border)}
+    .grid{display:grid;gap:12px}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.section{padding:18px}.section h2{margin:0;font-size:1.08rem}.section p{margin:6px 0 0;color:var(--muted);line-height:1.6}.info{padding:16px;border-radius:18px;background:var(--panel3);border:1px solid var(--border)}.info strong{display:block;margin-bottom:6px}
+    .preview{padding:18px}.preview-box{border-radius:20px;border:1px solid var(--border);background:linear-gradient(180deg,var(--panel),var(--panel2));padding:18px}.mini{display:grid;gap:10px}.mini-item{padding:12px 14px;border-radius:14px;background:var(--panel3);border:1px solid var(--border);display:flex;justify-content:space-between;gap:12px}.mini-item span{color:var(--muted)}
+    .feedback-strip{padding:18px;display:grid;gap:12px}.helpful-row{display:flex;flex-wrap:wrap;gap:8px}.helpful-pill{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:999px;padding:9px 14px;font-weight:800}
+    .footer{margin-top:14px;padding:16px 18px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.footer small{color:var(--muted)}.footer-links{display:flex;gap:10px;flex-wrap:wrap}.footer-links a{color:var(--brand);font-weight:800}
+    .floating{position:fixed;right:18px;bottom:18px;z-index:20;display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border:0;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 16px 32px rgba(37,99,235,.24);font-weight:800}
+    .icon-link svg,
+.theme-btn svg {
+  width:18px;
+  height:18px;
+  fill:currentColor; /* ye same rehne do */
+}
+
+.floating svg {
+  width:18px;
+  height:18px;
+  fill:none;            /* 👈 main fix */
+  stroke:currentColor;
+  stroke-width:2;
+}
+    @media (max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    @media (max-width:720px){.page{width:min(calc(100% - 16px),var(--max));padding-top:10px}.topbar{border-radius:18px}.topbar-inner,.hero,.section,.footer,.feedback-strip{padding-left:14px;padding-right:14px}.top-actions{width:100%}.top-link.primary{width:100%}.floating{right:12px;bottom:12px;padding:11px 15px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar"><div class="topbar-inner">
+      <a class="brand" href="help.html"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2zm0 2.2L6 7v7.8l6 3.4 6-3.4V7l-6-2.8zM11 8h2v5h-2V8zm0 6h2v2h-2v-2z"/></svg></div><div class="brand-text"><strong>Lumira Invoicing</strong><span>Help Center</span></div></a>
+      <div class="top-actions">
+        <a class="top-link primary" href="editor.html">Open Editor</a>
+        <a class="icon-link" href="help-guide.html" aria-label="Guide"><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg></a>
+        <a class="icon-link" href="help-support.html" aria-label="Support"><svg viewBox="0 0 24 24"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.58 1.45 4.88 3.72 6.36L5 21l3.88-2.07c.97.22 2.02.34 3.12.34 5.52 0 10-3.58 10-8s-4.48-8-10-8zm-4 9H6v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg></a>
+        <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v1.05a7 7 0 0 1 5.95 5.95H20a1 1 0 1 1 0 2h-1.05A7 7 0 0 1 13 18.95V20a1 1 0 1 1-2 0v-1.05A7 7 0 0 1 5.05 13H4a1 1 0 1 1 0-2h1.05A7 7 0 0 1 11 5.05V4a1 1 0 0 1 1-1zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg></button>
+      </div>
+    </div></header>
+
+    <section class="card hero">
+      <h1>Everything you need to invoice faster.</h1>
+      <p>Clear guides, instant support, and direct feedback — all in one place.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="help-guide.html">Open Guide</a><a class="btn btn-secondary" href="help-support.html">Contact Support</a><a class="btn btn-secondary" href="editor.html">Go to Editor</a></div>
+    </section>
+
+    <section class="grid grid-3" style="margin-top:14px;">
+      <article class="info"><strong>Step-by-step guide</strong><span>Learn the full workflow in minutes.</span></article>
+      <article class="info"><strong>Instant support</strong><span>One form. Real answers.</span></article>
+      <article class="info"><strong>Premium experience</strong><span>Clean, focused, and built for speed.</span></article>
+    </section>
+
+    <section class="card preview" style="margin-top:14px;">
+      <div class="preview-box">
+        <div class="mini">
+          <div class="mini-item"><strong>Getting started</strong><span>Editor &amp; templates</span></div>
+          <div class="mini-item"><strong>Items &amp; logo</strong><span>Best practices</span></div>
+          <div class="mini-item"><strong>Export &amp; share</strong><span>PDF &amp; image</span></div>
+          <div class="mini-item"><strong>Support &amp; feedback</strong><span>Always one click away</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="feedback-strip card" style="margin-top:14px;">
+      <h3>Feedback shapes the future of Lumira.</h3>
+    </section>
+
+    <footer class="footer"><small>© Lumira Invoicing Help Center</small><div class="footer-links"><a href="help-guide.html">Guide</a><a href="help-support.html">Support</a><a href="editor.html">Editor</a></div></footer>
+  </div>
+ <button class="floating" id="floatingSupport" type="button">
+  <svg viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  Feedback
+</button>
+  <script>
+  (function(){const k='lumira-theme',t=document.getElementById('themeToggle'),i=document.getElementById('themeIcon');const openFeedback=()=>window.open('https://your-feedback-form-url.com','_blank','noopener,noreferrer');function a(theme){const n=theme==='dark'?'dark':'light';document.documentElement.setAttribute('data-theme',n);localStorage.setItem(k,n);const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',n==='dark'?'#07101d':'#f8fafc');if(i)i.innerHTML=n==='dark'?'<path d="M12 3a1 1 0 0 1 1 1v1.05a7 7 0 0 1 5.95 5.95H20a1 1 0 1 1 0 2h-1.05A7 7 0 0 1 13 18.95V20a1 1 0 1 1-2 0v-1.05A7 7 0 0 1 5.05 13H4a1 1 0 1 1 0-2h1.05A7 7 0 0 1 11 5.05V4a1 1 0 0 1 1-1zm0 4a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/>':'<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>';}
+ const saved=localStorage.getItem(k);a(saved==='dark'||saved==='light'?saved:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));t?.addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme')||'light';a(c==='dark'?'light':'dark')});document.getElementById('floatingSupport')?.addEventListener('click',openFeedback);})();
+  </script>
+</body>
+</html>
