@@ -1,5 +1,12 @@
 {
-  "routes": [
-    { "src": "/", "dest": "/index.html" }
-  ]
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/templates", "destination": "/templates.html" },
+    { "source": "/templates.html", "destination": "/templates.html" },
+    { "source": "/editor", "destination": "/editor.html" },
+    { "source": "/editor.html", "destination": "/editor.html" },
+    { "source": "/how-it-works", "destination": "/how-it-works.html" },
+    { "source": "/how-it-works.html", "destination": "/how-it-works.html" }
+  ],
+  "cleanUrls": true
 }
