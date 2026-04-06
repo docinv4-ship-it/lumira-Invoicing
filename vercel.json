@@ -1,9 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/templates", "destination": "/templates.html" },
-    { "source": "/templates.html", "destination": "/templates.html" },
-    { "source": "/editor", "destination": "/editor.html" },
-    { "source": "/editor.html", "destination": "/editor.html" }
+  "routes": [
+    { "src": "/", "dest": "/index.html" }
   ]
 }
