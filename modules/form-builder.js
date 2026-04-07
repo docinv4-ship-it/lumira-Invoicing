@@ -4,15 +4,15 @@ window.InvoiceEditorForm = (() => {
   const C = window.InvoiceEditorCalculations;
 
   const FIELD_CHAR_LIMITS = {
-    notes: 50,
-    payment_info: 16,
-    payment_details: 160,
-    payment_method: 60,
-    payment_terms: 120,
-    terms: 120,
-    description: 80,
-    item_description: 80
-  };
+  "notes": 300,
+  "payment_info": 30,
+  "payment_details": 200,
+  "payment_method": 80,
+  "payment_terms": 100,
+  "terms": 1500,
+  "description": 200,
+  "item_description": 300
+};
 
   const SECTION_ORDER = [
     "logo",
