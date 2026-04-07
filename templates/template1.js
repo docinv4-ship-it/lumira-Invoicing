@@ -18,7 +18,7 @@ window.templates[1] = `
     .t12-shell{
       position:relative;
       z-index:2;
-      padding:36px 40px 160px 40px; /* thoda extra padding bottom curve ke liye */
+      padding:36px 40px 175px 40px;
       min-height:842px;
       box-sizing:border-box;
       overflow:visible;
@@ -46,7 +46,7 @@ window.templates[1] = `
 
     .t12-bottom-bg{
       bottom:0;
-      height:140px; /* chhota size rakha */
+      height:140px;
     }
 
     /* Header block */
@@ -148,25 +148,27 @@ window.templates[1] = `
     }
 
     .t12-items-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
+      display:grid;
+      grid-template-columns: 52% 16% 12% 20%;
+      align-items:end;
       margin-bottom:8px;
       padding:0 2px 8px 2px;
       border-bottom:1.5px solid rgba(0,0,0,0.9);
       font-size:11px;
       font-weight:700;
       color:#000;
+      box-sizing:border-box;
     }
 
     .t12-items-head span{
       display:block;
+      box-sizing:border-box;
     }
 
-    .t12-items-head .desc{ width:52%; }
-    .t12-items-head .price{ width:16%; text-align:right; }
-    .t12-items-head .qty{ width:12%; text-align:center; }
-    .t12-items-head .total{ width:20%; text-align:right; }
+    .t12-items-head .desc{ text-align:left; }
+    .t12-items-head .price{ text-align:right; }
+    .t12-items-head .qty{ text-align:center; }
+    .t12-items-head .total{ text-align:right; }
 
     .t12-table{
       width:100%;
@@ -174,6 +176,14 @@ window.templates[1] = `
       font-size:11px;
       table-layout:fixed;
       page-break-inside:auto;
+    }
+
+    .t12-table thead{
+      display:table-header-group;
+    }
+
+    .t12-table tbody{
+      display:table-row-group;
     }
 
     .t12-table th{
@@ -187,15 +197,31 @@ window.templates[1] = `
       vertical-align:top;
       word-break:break-word;
       overflow-wrap:anywhere;
+      box-sizing:border-box;
     }
 
-    .t12-table .desc{ width:52%; }
-    .t12-table .price{ width:16%; text-align:right; white-space:nowrap; }
-    .t12-table .qty{ width:12%; text-align:center; white-space:nowrap; }
-    .t12-table .total{ width:20%; text-align:right; white-space:nowrap; font-weight:700; }
+    .t12-table .desc{
+      width:52%;
+      text-align:left;
+    }
 
-    .t12-table thead{
-      display:table-header-group;
+    .t12-table .price{
+      width:16%;
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    .t12-table .qty{
+      width:12%;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .t12-table .total{
+      width:20%;
+      text-align:right;
+      white-space:nowrap;
+      font-weight:700;
     }
 
     .t12-table tbody tr{
@@ -266,7 +292,7 @@ window.templates[1] = `
       margin-top:34px;
     }
 
-    /* Print support */
+    /* ====================== PRINT / PDF SUPPORT ====================== */
     @media print{
       .t12-root{
         box-shadow:none;
@@ -277,7 +303,45 @@ window.templates[1] = `
       }
 
       .t12-shell{
-        padding-bottom:120px;
+        padding-bottom:175px;
+      }
+
+      .t12-items-head{
+        display:grid !important;
+      }
+
+      .t12-table th{
+        display:table-cell !important;
+        padding:9px 6px !important;
+        border-bottom:2px solid #000000 !important;
+        font-size:11px !important;
+        font-weight:700 !important;
+        color:#000000 !important;
+        white-space:nowrap;
+        vertical-align:bottom;
+        box-sizing:border-box;
+      }
+
+      .t12-table th.desc{ 
+        text-align:left !important; 
+        width:52% !important; 
+      }
+      .t12-table th.price{ 
+        text-align:right !important; 
+        width:16% !important; 
+      }
+      .t12-table th.qty{ 
+        text-align:center !important; 
+        width:12% !important; 
+      }
+      .t12-table th.total{ 
+        text-align:right !important; 
+        width:20% !important; 
+      }
+
+      .t12-table td{
+        padding:9px 6px !important;
+        border-bottom:1px solid #aaa !important;
       }
 
       @page {
@@ -296,7 +360,7 @@ window.templates[1] = `
   </style>
 
   <div class="t12-shell">
-    <!-- Top Background (same as before) -->
+    <!-- Top Background -->
     <svg class="t12-top-bg" width="595" height="280" viewBox="0 0 595 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <defs>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -309,13 +373,12 @@ window.templates[1] = `
           <stop offset="100%" stop-color="#0F2035"/>
         </linearGradient>
       </defs>
-
       <rect width="595" height="280" fill="#ffffff"/>
       <path d="M 0 0 L 450 0 C 350 80 200 180 0 220 Z" fill="url(#blueGrad)"/>
       <path d="M 450 0 C 350 80 200 180 0 220" fill="none" stroke="url(#goldGrad)" stroke-width="3"/>
     </svg>
 
-    <!-- Updated Bottom Background (chhota + smoother curve, top jaisa style) -->
+    <!-- Bottom Background -->
     <svg class="t12-bottom-bg" width="595" height="140" viewBox="0 0 595 140" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <defs>
         <linearGradient id="goldGradB" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -328,22 +391,14 @@ window.templates[1] = `
           <stop offset="100%" stop-color="#0F2035"/>
         </linearGradient>
       </defs>
-
-      <!-- Main blue curve (top jaisa slide feel) -->
       <path d="M 0 140 L 595 140 L 595 60 C 480 20 320 85 180 140 Z" fill="url(#blueGradB)" opacity="0.95"/>
-
-      <!-- Gold accent layers (smaller waves) -->
       <path d="M 0 140 L 595 140 L 595 95 C 460 55 340 110 220 140 Z" fill="url(#goldGradB)" opacity="0.45"/>
       <path d="M 150 140 C 280 80 420 55 595 105 L 595 140 L 150 140 Z" fill="url(#goldGradB)" opacity="0.7"/>
-
-      <!-- Extra dark blue/gold blend for depth -->
       <path d="M 0 140 H 595 V 115 C 480 65 350 95 220 140 H 0 Z" fill="#102a43" opacity="0.85"/>
     </svg>
 
     <div class="t12-content">
-      <!-- Header, Identity, Items, Totals, Notes - sab same rakha hai -->
       <div class="t12-header">
-        <!-- Logo -->
         <div class="t12-logo">
           <svg width="116" height="116" viewBox="0 0 116 116" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -363,7 +418,6 @@ window.templates[1] = `
           </svg>
         </div>
 
-        <!-- Title + Meta -->
         <div class="t12-title-meta">
           <div class="t12-title">INVOICE</div>
           <div class="t12-meta">
@@ -377,7 +431,6 @@ window.templates[1] = `
         </div>
       </div>
 
-      <!-- Business & Client -->
       <div class="t12-identity">
         <div class="t12-card">
           <div class="t12-section-title">Business Details</div>
@@ -407,6 +460,12 @@ window.templates[1] = `
         </div>
 
         <table class="t12-table">
+          <colgroup>
+            <col style="width:52%">
+            <col style="width:16%">
+            <col style="width:12%">
+            <col style="width:20%">
+          </colgroup>
           <thead>
             <tr>
               <th class="desc">Item Description</th>
