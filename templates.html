@@ -7,6 +7,27 @@
   <meta name="description" content="Browse premium invoice templates and preview any design instantly without leaving the page." />
   <meta name="theme-color" content="#08101d" />
 
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem("lumira-theme");
+        const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+        const initialTheme = savedTheme === "light" || savedTheme === "dark"
+          ? savedTheme
+          : (prefersLight ? "light" : "dark");
+
+        document.documentElement.setAttribute("data-theme", initialTheme);
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute("content", initialTheme === "light" ? "#f8fafc" : "#08101d");
+        }
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -98,6 +119,7 @@
       align-items: center;
       gap: 12px;
       min-width: 0;
+      flex: 1 1 auto;
     }
 
     .brand-mark {
@@ -151,6 +173,7 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
+      flex: 0 0 auto;
     }
 
     .btn {
@@ -193,6 +216,7 @@
       color: var(--text);
       transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
       cursor: pointer;
+      flex: 0 0 auto;
     }
 
     .icon-btn:hover {
@@ -204,7 +228,12 @@
     .icon-btn svg {
       width: 18px;
       height: 18px;
-      fill: currentColor;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
     }
 
     .hero {
@@ -455,6 +484,7 @@
       object-fit: contain;
       display: block;
       background: #ffffff;
+      cursor: pointer;
     }
 
     .template-badge {
@@ -635,6 +665,7 @@
       place-items: center;
       cursor: pointer;
       transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      flex: 0 0 auto;
     }
 
     .theme-toggle:hover {
@@ -646,7 +677,12 @@
     .theme-toggle svg {
       width: 18px;
       height: 18px;
-      fill: currentColor;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
     }
 
     @media (max-width: 1100px) {
@@ -667,6 +703,41 @@
 
     @media (max-width: 760px) {
       .nav-links { display: none; }
+
+      .nav-inner {
+        flex-wrap: nowrap;
+        align-items: center;
+      }
+
+      .brand {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-mark svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-text strong {
+        font-size: 0.95rem;
+      }
+
+      .brand-text span {
+        font-size: 0.74rem;
+      }
+
+      .nav-actions {
+        width: auto;
+        flex: 0 0 auto;
+        margin-left: auto;
+      }
+
       .hero-grid,
       .gallery-grid,
       .controls {
@@ -683,32 +754,26 @@
         width: 100%;
       }
 
-      .nav-actions {
-        width: 100%;
+      .nav-actions .theme-toggle {
+        width: 42px;
+        height: 42px;
+        padding: 0;
       }
 
-      .nav-actions .btn { flex: 1; }
-      .template-title-row { flex-direction: column; }
-
-      .nav-actions .theme-toggle {
-        width: 100%;
-        display: inline-flex;
-        justify-content: center;
-        gap: 10px;
+      .template-title-row {
+        flex-direction: column;
       }
     }
   </style>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-53W9XQJY6X');
-</script>
-
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-53W9XQJY6X');
+  </script>
 </head>
 <body>
   <header class="nav">
@@ -749,20 +814,17 @@
         </a>
 
         <nav class="nav-links" aria-label="Primary">
-          <a href="index.html">Landing</a>
           <a href="#gallery">Templates</a>
           <a href="how-it-works.html">How it works</a>
         </nav>
 
         <div class="nav-actions">
           <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Switch theme">
-            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="themeIcon" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="5"></circle>
               <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
             </svg>
           </button>
-
-          <a class="btn btn-secondary" href="index.html">Back to landing</a>
         </div>
       </div>
     </div>
@@ -925,7 +987,11 @@
     function setTheme(theme) {
       const nextTheme = theme === "light" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", nextTheme);
-      localStorage.setItem("lumira-theme", nextTheme);
+
+      try {
+        localStorage.setItem("lumira-theme", nextTheme);
+      } catch (error) {}
+
       setMetaThemeColor(nextTheme);
 
       if (nextTheme === "light") {
@@ -941,12 +1007,16 @@
     }
 
     function initTheme() {
-      const saved = localStorage.getItem("lumira-theme");
-      if (saved) {
-        setTheme(saved);
-      } else {
-        const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-        setTheme(prefersLight ? "light" : "dark");
+      try {
+        const saved = localStorage.getItem("lumira-theme");
+        if (saved === "light" || saved === "dark") {
+          setTheme(saved);
+        } else {
+          const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+          setTheme(prefersLight ? "light" : "dark");
+        }
+      } catch (error) {
+        setTheme("dark");
       }
     }
 
