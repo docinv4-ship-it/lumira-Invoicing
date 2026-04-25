@@ -17,6 +17,22 @@
   <meta name="twitter:title" content="Free Online Invoice Generator | Lumira Invoicing" />
   <meta name="twitter:description" content="Create professional invoices in seconds with free templates, no sign-up, and instant PDF export." />
 
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem("lumira-theme");
+        const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+        const initialTheme = savedTheme === "light" || savedTheme === "dark"
+          ? savedTheme
+          : (prefersLight ? "light" : "dark");
+
+        document.documentElement.setAttribute("data-theme", initialTheme);
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -995,8 +1011,6 @@
           <a href="why-it-wins.html">Why it wins</a>
         </nav>
         <div class="nav-actions">
-          
-
           <button id="themeToggle" class="icon-btn" aria-label="Toggle dark/light mode" title="Switch theme" type="button">
             <svg id="themeIcon" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="5"></circle>
@@ -1371,7 +1385,6 @@
     </div>
   </footer>
 
-
   <script>
     const feedbackUrl = "https://forms.gle/31xLtR3Ek1b6p3F97";
 
@@ -1398,7 +1411,10 @@
     function applyTheme(theme) {
       const nextTheme = theme === "light" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", nextTheme);
-      localStorage.setItem("lumira-theme", nextTheme);
+
+      try {
+        localStorage.setItem("lumira-theme", nextTheme);
+      } catch (error) {}
 
       const metaThemeColor = document.querySelector('meta[name="theme-color"]');
       if (metaThemeColor) {
@@ -1409,34 +1425,49 @@
     }
 
     function initTheme() {
-      const saved = localStorage.getItem("lumira-theme");
-      if (saved === "dark" || saved === "light") {
-        applyTheme(saved);
-      } else {
-        const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-        applyTheme(prefersLight ? "light" : "dark");
+      try {
+        const saved = localStorage.getItem("lumira-theme");
+        if (saved === "dark" || saved === "light") {
+          applyTheme(saved);
+        } else {
+          const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+          applyTheme(prefersLight ? "light" : "dark");
+        }
+      } catch (error) {
+        applyTheme("dark");
       }
     }
 
-    document.getElementById("feedbackFab").addEventListener("click", openFeedbackDirect);
-    document.getElementById("panelFeedbackBtn").addEventListener("click", openFeedbackDirect);
+    const feedbackFab = document.getElementById("feedbackFab");
+    if (feedbackFab) {
+      feedbackFab.addEventListener("click", openFeedbackDirect);
+    }
 
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme") || "dark";
-      applyTheme(current === "dark" ? "light" : "dark");
-    });
+    const panelFeedbackBtn = document.getElementById("panelFeedbackBtn");
+    if (panelFeedbackBtn) {
+      panelFeedbackBtn.addEventListener("click", openFeedbackDirect);
+    }
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const themeToggle = document.getElementById("themeToggle");
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme") || "dark";
+        applyTheme(current === "dark" ? "light" : "dark");
+      });
+    }
+
+    const yearElement = document.getElementById("year");
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear();
+    }
 
     window.addEventListener("DOMContentLoaded", () => {
       initTheme();
     });
 
     window.addEventListener("load", () => {
-      setTimeout(() => {
-        const current = document.documentElement.getAttribute("data-theme") || "dark";
-        replaceThemeIcon(current);
-      }, 120);
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      replaceThemeIcon(current);
     });
   </script>
 </body>
