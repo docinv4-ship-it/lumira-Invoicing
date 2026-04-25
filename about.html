@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Lumira Invoicing</title>
+  <meta name="description" content="Learn about Lumira Invoicing, the clean and fast invoice generator built for freelancers, small businesses, and teams." />
+  <meta name="theme-color" content="#f8fafc" />
+  <meta name="robots" content="index,follow" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='lumiraGrad' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='4' width='40' height='40' rx='12' fill='url(%23lumiraGrad)'/%3E%3Cpath d='M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M26 14v6h6' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3Cline x1='18' y1='26' x2='30' y2='26' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='18' y1='30' x2='26' y2='30' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root{
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e5e7eb;
+      --brand:#2563eb;
+      --brand-2:#7c3aed;
+      --shadow:0 18px 50px rgba(15,23,42,.08);
+      --max:1100px;
+    }
+    html[data-theme="dark"]{
+      --bg:#07111f;
+      --panel:rgba(255,255,255,.06);
+      --text:#edf4ff;
+      --muted:#a5b4cc;
+      --border:rgba(255,255,255,.10);
+      --brand:#60a5fa;
+      --brand-2:#8b5cf6;
+      --shadow:0 24px 70px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(96,165,250,.12), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(139,92,246,.10), transparent 25%),
+        linear-gradient(180deg,var(--bg),var(--bg));
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(calc(100% - 32px), var(--max)); margin:0 auto; padding:18px 0 36px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--border);border-radius:22px;
+      background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(16px);
+      box-shadow:var(--shadow);position:sticky;top:12px;z-index:20;
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .brand-mark{width:42px;height:42px;border-radius:14px;overflow:hidden;flex:0 0 auto}
+    .brand-mark svg{width:42px;height:42px;display:block}
+    .brand-text{display:flex;flex-direction:column;line-height:1.08;min-width:0}
+    .brand-text strong{font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand-text span{font-size:.84rem;color:var(--muted)}
+    .nav{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 14px;
+      border-radius:999px;border:1px solid var(--border);background:var(--panel);
+      font-size:.9rem;font-weight:600;
+    }
+
+    .hero{
+      margin-top:18px;padding:28px;border:1px solid var(--border);border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow:var(--shadow);
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+      border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:.88rem;margin-bottom:14px;
+    }
+    h1{margin:0;font-size:clamp(2rem,4vw,3.2rem);line-height:1;letter-spacing:-.04em}
+    .lead{margin:14px 0 0;max-width:70ch;color:var(--muted);line-height:1.8;font-size:1.02rem}
+
+    .grid{
+      margin-top:18px;display:grid;gap:16px;grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+    .card{
+      padding:22px;border:1px solid var(--border);border-radius:24px;background:var(--panel);
+      box-shadow:0 10px 30px rgba(0,0,0,.06);min-height:100%;
+    }
+    .card.full{grid-column:1 / -1}
+    .card h2{margin:0 0 10px;font-size:1.2rem;letter-spacing:-.02em}
+    .card p,.card li{margin:0;color:var(--muted);line-height:1.75;font-size:.98rem}
+    .card ul{margin:10px 0 0;padding-left:18px;display:grid;gap:8px}
+    .footer{
+      margin:18px 0 0;padding:18px 4px 8px;color:var(--muted);font-size:.92rem;
+      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border);
+    }
+
+    @media (max-width: 760px){
+      .wrap{width:min(calc(100% - 16px), var(--max))}
+      .topbar{padding:12px 14px;border-radius:18px;top:8px}
+      .hero{padding:20px}
+      .grid{grid-template-columns:1fr}
+      .card{padding:18px}
+      .nav{width:100%}
+      .pill{flex:1 1 auto}
+      .footer{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Lumira home">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lumiraGrad2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#2563eb"/>
+                <stop offset="100%" stop-color="#7c3aed"/>
+              </linearGradient>
+            </defs>
+            <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#lumiraGrad2)"/>
+            <path d="M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M26 14v6h6" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="18" y1="26" x2="30" y2="26" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            <line x1="18" y1="30" x2="26" y2="30" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <strong>Lumira Invoicing</strong>
+          <span>About the product</span>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="privacy-policy.html">Privacy</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">👤 About Us</div>
+      <h1>Built to make invoicing feel simple.</h1>
+      <p class="lead">
+        Lumira Invoicing is a clean, fast invoice generator built for freelancers, small businesses, and teams that want a polished workflow without unnecessary friction.
+      </p>
+    </section>
+
+    <main class="grid">
+      <section class="card">
+        <h2>What Lumira does</h2>
+        <p>
+          Lumira helps users create professional invoices in seconds. You choose a template, fill in the details, preview instantly, and export the final invoice as PDF or image.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>The problem we solve</h2>
+        <p>
+          Invoicing tools often feel slow, cluttered, or locked behind sign-up walls. Lumira was designed to remove that friction and make the process feel smooth from the first click.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Who it is for</h2>
+        <ul>
+          <li>Freelancers</li>
+          <li>Small businesses</li>
+          <li>Agencies</li>
+          <li>Founders and solo operators</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Why it feels different</h2>
+        <p>
+          The interface is built with a SaaS-style experience in mind: premium visuals, clear structure, live preview, and fast export options that feel modern and reliable.
+        </p>
+      </section>
+
+      <section class="card full">
+        <h2>Our vision</h2>
+        <p>
+          Lumira is the first step in a larger product ecosystem. The goal is to keep building simple, useful tools that save time and help people work smarter.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>© 2026 Lumira Invoicing</div>
+      <div>Simple tools. Premium feel.</div>
+    </footer>
+  </div>
+</body>
+</html>
