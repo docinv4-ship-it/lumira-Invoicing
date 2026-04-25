@@ -27,6 +27,11 @@
           : (prefersLight ? "light" : "dark");
 
         document.documentElement.setAttribute("data-theme", initialTheme);
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute("content", initialTheme === "light" ? "#f8fafc" : "#0f172a");
+        }
       } catch (error) {
         document.documentElement.setAttribute("data-theme", "dark");
       }
@@ -122,6 +127,7 @@
       align-items: center;
       gap: 12px;
       min-width: 0;
+      flex: 1 1 auto;
     }
 
     .brand-mark {
@@ -175,6 +181,7 @@
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
+      flex: 0 0 auto;
     }
 
     .btn {
@@ -217,6 +224,7 @@
       color: var(--text);
       transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
       cursor: pointer;
+      flex: 0 0 auto;
     }
 
     .icon-btn:hover {
@@ -259,7 +267,7 @@
     }
 
     .hero {
-      padding: 74px 0 34px;
+      padding: 68px 0 28px;
     }
 
     .hero-grid {
@@ -689,6 +697,39 @@
       margin-bottom: 14px;
     }
 
+    .ad-slot {
+      margin: 22px 0 8px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      box-shadow: 0 14px 36px rgba(0,0,0,0.10);
+    }
+
+    html[data-theme="light"] .ad-slot {
+      background: #ffffff;
+    }
+
+    .ad-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted-2);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .ad-label::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--brand);
+      box-shadow: 0 0 0 6px rgba(96,165,250,0.12);
+    }
+
     .feedback-panel {
       padding: 24px;
       border-radius: 28px;
@@ -914,7 +955,47 @@
     @media (max-width: 760px) {
       .nav-links { display: none; }
 
-      .hero-grid, .feature-grid, .workflow, .metrics, .roadmap, .feedback-panel, .mock-body {
+      .nav-inner {
+        flex-wrap: nowrap;
+        align-items: center;
+      }
+
+      .brand {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-mark svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-text strong {
+        font-size: 0.95rem;
+      }
+
+      .brand-text span {
+        font-size: 0.74rem;
+      }
+
+      .nav-actions {
+        width: auto;
+        flex: 0 0 auto;
+        margin-left: auto;
+      }
+
+      .hero-grid,
+      .feature-grid,
+      .workflow,
+      .metrics,
+      .roadmap,
+      .feedback-panel,
+      .mock-body {
         grid-template-columns: 1fr;
       }
 
@@ -935,19 +1016,14 @@
         flex-direction: column;
       }
 
-      .nav-actions {
-        width: 100%;
-      }
-
-      .nav-actions .btn,
-      .nav-actions .icon-btn,
-      .nav-actions .brand-social {
-        flex: 1 1 auto;
-      }
-
       .mock-editor {
         border-right: 0;
         border-bottom: 1px solid var(--border);
+      }
+
+      .nav-actions .icon-btn {
+        width: 42px;
+        height: 42px;
       }
     }
   </style>
@@ -1010,6 +1086,7 @@
           <a href="how-it-works.html">How it works</a>
           <a href="why-it-wins.html">Why it wins</a>
         </nav>
+
         <div class="nav-actions">
           <button id="themeToggle" class="icon-btn" aria-label="Toggle dark/light mode" title="Switch theme" type="button">
             <svg id="themeIcon" viewBox="0 0 24 24">
@@ -1179,6 +1256,12 @@
         <div class="seo-strip">
           <strong>Free online invoice generator</strong>, <strong>invoice maker online</strong>, <strong>invoice pdf generator</strong>, and <strong>professional invoice generator</strong> in one clean workflow. Lumira Invoicing is built for people searching for a simple invoice generator free, a bill generator online, a free invoice maker, or a fast invoice creator with no sign-up required.
         </div>
+
+        <section class="ad-slot" aria-label="Advertisement">
+          <div class="ad-label">Sponsored</div>
+          <script async="async" data-cfasync="false" src="https://pl29247228.profitablecpmratenetwork.com/9395b1a1cf2c840d940354dbe416f788/invoke.js"></script>
+          <div id="container-9395b1a1cf2c840d940354dbe416f788"></div>
+        </section>
       </div>
     </section>
 
