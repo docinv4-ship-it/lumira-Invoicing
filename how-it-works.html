@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#f8fafc" />
   <meta name="description" content="Learn how Lumira Invoicing works: choose a template, fill the form, preview instantly, and export PDF or image without sign-up." />
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -15,7 +16,7 @@
     }
 
     * {
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, transform, box-shadow;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 150ms;
     }
@@ -25,13 +26,15 @@
     }
 
     .hero-bg {
-      background: radial-gradient(circle at 30% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 50%);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 50%);
     }
 
     .dark .hero-bg {
-      background: radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.25) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.18) 0%, transparent 50%);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.18) 0%, transparent 50%);
     }
 
     .glass {
@@ -67,104 +70,172 @@
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
     }
+
+    .ad-slot {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 28px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .dark .ad-slot {
+      background: rgba(15, 23, 42, 0.72);
+      border-color: rgba(255, 255, 255, 0.10);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.20);
+    }
+
+    .ad-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgb(100 116 139);
+      margin-bottom: 12px;
+    }
+
+    .dark .ad-label {
+      color: rgb(148 163 184);
+    }
+
+    .ad-label::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.12);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-stack {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .mobile-full {
+        width: 100%;
+      }
+
+      .floating-help {
+        right: 16px !important;
+        left: 16px !important;
+        justify-content: center;
+      }
+    }
   </style>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-53W9XQJY6X');
+  </script>
 
-  gtag('config', 'G-53W9XQJY6X');
-</script>
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('lumira-theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialTheme = savedTheme === 'dark' || savedTheme === 'light'
+          ? savedTheme
+          : (prefersDark ? 'dark' : 'light');
 
+        document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+        document.documentElement.setAttribute('data-theme', initialTheme);
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute('content', initialTheme === 'dark' ? '#0f172a' : '#f8fafc');
+        }
+      } catch (error) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
 </head>
+
 <body class="tailwind-ready bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
-  <!-- Premium Top Navigation -->
   <nav class="sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
-    <div class="max-w-screen-2xl mx-auto px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="index.html" class="flex items-center gap-x-3">
-          <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-inner">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-3 mobile-stack">
+        <a href="index.html" class="flex items-center gap-x-3 min-w-0">
+          <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-inner flex-shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z" />
             </svg>
           </div>
-          <div>
-            <span class="font-semibold tracking-[-0.5px] text-2xl">Lumira</span>
+          <div class="min-w-0">
+            <span class="font-semibold tracking-[-0.5px] text-xl sm:text-2xl block leading-none">Lumira</span>
+            <span class="text-xs text-zinc-500 dark:text-zinc-400 font-medium block mt-1">Invoicing</span>
           </div>
-          <span class="text-xs font-medium px-2.5 py-px bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 rounded-full">INVOICING</span>
         </a>
 
-     <!-- Menu -->
-<div class="flex items-center gap-x-2">
-  <a href="templates.html" 
-     class="group px-6 py-2.5 text-sm font-semibold rounded-3xl flex items-center gap-x-2 
-            hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-200">
+        <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end mobile-full">
+          <a href="templates.html"
+             class="group px-4 sm:px-6 py-2.5 text-sm font-semibold rounded-3xl flex items-center gap-x-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5 text-zinc-500 group-hover:text-black dark:group-hover:text-white transition-colors duration-200"
+                 viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+              <rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+              <rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+              <rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            <span class="tracking-tight">Templates</span>
+          </a>
 
-    <!-- SaaS Level Template Icon -->
-    <svg xmlns="http://www.w3.org/2000/svg" 
-         class="w-5 h-5 text-zinc-500 group-hover:text-black dark:group-hover:text-white transition-colors duration-200" 
-         viewBox="0 0 24 24" fill="none">
-      <rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-      <rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-      <rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-      <rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-    </svg>
-
-    <span class="tracking-tight">Templates</span>
-  </a>
-          <a href="editor.html" 
-             class="px-6 py-2.5 text-sm font-semibold bg-gradient-to-r from-blue-600 to-violet-600 text-white hover:shadow-xl hover:shadow-blue-500/30 rounded-3xl flex items-center gap-x-2">
+          <a href="editor.html"
+             class="px-4 sm:px-6 py-2.5 text-sm font-semibold bg-gradient-to-r from-blue-600 to-violet-600 text-white hover:shadow-xl hover:shadow-blue-500/30 rounded-3xl flex items-center gap-x-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276L20 10V18H4V6L8.553 3.724 12 6 15.447 3.724 20 6" />
             </svg>
             Open Editor
           </a>
-
-         
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- HERO - Premium SaaS Style -->
   <header class="hero-bg pt-16 pb-20">
-    <div class="max-w-screen-2xl mx-auto px-8">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-12 gap-16 items-center">
-        <!-- Left content -->
         <div class="lg:col-span-7">
           <div class="inline-flex items-center gap-x-2 bg-white dark:bg-zinc-900 shadow-inner border border-zinc-200 dark:border-zinc-700 rounded-3xl px-5 py-2 text-sm font-semibold text-blue-600 dark:text-blue-400 mb-6">
             <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             NO SIGN-UP • INSTANT START
           </div>
 
-          <h1 class="text-6xl lg:text-7xl font-semibold tracking-[-2px] leading-none mb-6">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-[-2px] leading-none mb-6">
             Create professional<br>invoices in seconds.
           </h1>
-          
-          <p class="text-xl text-zinc-600 dark:text-zinc-400 max-w-xl mb-10">
+
+          <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-xl mb-10">
             Lumira keeps the flow simple: choose a template, fill the form, watch the live preview update instantly, then download the final invoice as PDF or image.
           </p>
 
-          <div class="flex items-center gap-x-4">
-            <a href="editor.html" 
-               class="px-8 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-3xl flex items-center gap-x-3 hover:shadow-2xl hover:shadow-blue-500/40 text-lg">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            <a href="editor.html"
+               class="px-7 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-3xl flex items-center justify-center sm:justify-start gap-x-3 hover:shadow-2xl hover:shadow-blue-500/40 text-base sm:text-lg">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7-7 7M5 12h14" />
               </svg>
               Open Editor Now
             </a>
-            
-            <a href="templates.html" 
-               class="px-8 py-4 border-2 border-zinc-300 dark:border-zinc-700 font-semibold rounded-3xl hover:bg-zinc-100 dark:hover:bg-zinc-900 flex items-center gap-x-3 text-lg">
+
+            <a href="templates.html"
+               class="px-7 py-4 border-2 border-zinc-300 dark:border-zinc-700 font-semibold rounded-3xl hover:bg-zinc-100 dark:hover:bg-zinc-900 flex items-center justify-center sm:justify-start gap-x-3 text-base sm:text-lg">
               Browse Templates
             </a>
           </div>
 
-          <!-- Trust signals -->
           <div class="flex items-center gap-x-8 mt-12">
             <div class="flex -space-x-4">
               <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-2xl flex items-center justify-center ring-2 ring-white dark:ring-zinc-950 text-blue-600">⚡</div>
@@ -178,7 +249,6 @@
           </div>
         </div>
 
-        <!-- Right visual - Premium flow preview -->
         <div class="lg:col-span-5">
           <div class="glass rounded-3xl p-2 shadow-2xl border border-white/50 dark:border-zinc-700">
             <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8">
@@ -186,8 +256,7 @@
                 <div class="font-semibold text-lg">Live Preview Flow</div>
                 <span class="text-xs font-bold uppercase tracking-[1px] px-4 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300 rounded-3xl">4 steps • 38 seconds</span>
               </div>
-              
-              <!-- Mini flow visual -->
+
               <div class="grid grid-cols-4 gap-4">
                 <div class="text-center">
                   <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-violet-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-inner">1</div>
@@ -212,21 +281,25 @@
           </div>
         </div>
       </div>
+
+      <section class="ad-slot mt-10 md:mt-14" aria-label="Advertisement">
+        <div class="ad-label">Sponsored</div>
+        <script async="async" data-cfasync="false" src="https://pl29247228.profitablecpmratenetwork.com/9395b1a1cf2c840d940354dbe416f788/invoke.js"></script>
+        <div id="container-9395b1a1cf2c840d940354dbe416f788"></div>
+      </section>
     </div>
   </header>
 
-  <!-- HOW IT WORKS - Premium Timeline -->
-  <section class="max-w-screen-2xl mx-auto px-8 py-20" id="how-it-works">
+  <section class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20" id="how-it-works">
     <div class="text-center mb-12">
       <span class="px-6 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-3xl text-sm font-semibold tracking-widest">4 STEPS • ZERO FRICTION</span>
-      <h2 class="text-5xl font-semibold tracking-[-1px] mt-4">The workflow stays short and clear.</h2>
-      <p class="text-xl text-zinc-600 dark:text-zinc-400 mt-3 max-w-2xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-[-1px] mt-4">The workflow stays short and clear.</h2>
+      <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mt-3 max-w-2xl mx-auto">
         Everything is designed to remove friction. The user never needs to think about setup, accounts, or hidden steps.
       </p>
     </div>
 
     <div class="grid md:grid-cols-4 gap-8 relative">
-      <!-- Step 1 -->
       <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
         <div class="flex justify-between">
           <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-violet-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">1</div>
@@ -238,7 +311,6 @@
         </p>
       </div>
 
-      <!-- Step 2 -->
       <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
         <div class="flex justify-between">
           <div class="w-12 h-12 bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">2</div>
@@ -250,7 +322,6 @@
         </p>
       </div>
 
-      <!-- Step 3 -->
       <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
         <div class="flex justify-between">
           <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">3</div>
@@ -262,7 +333,6 @@
         </p>
       </div>
 
-      <!-- Step 4 -->
       <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
         <div class="flex justify-between">
           <div class="w-12 h-12 bg-gradient-to-br from-pink-600 to-rose-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">4</div>
@@ -276,44 +346,51 @@
     </div>
   </section>
 
-  <!-- WHY PEOPLE LOVE IT - Premium Benefits -->
   <section class="bg-white dark:bg-zinc-900 py-20 border-t border-b border-zinc-200 dark:border-zinc-800">
-    <div class="max-w-screen-2xl mx-auto px-8">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
-        <h2 class="text-5xl font-semibold tracking-[-1px]">Why people keep using it.</h2>
-        <p class="text-xl text-zinc-600 dark:text-zinc-400 mt-3">The product feels light, clear, and professional. That makes it easier to return to the next time someone needs an invoice.</p>
+        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-1px]">Why people keep using it.</h2>
+        <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mt-3">
+          The product feels light, clear, and professional. That makes it easier to return to the next time someone needs an invoice.
+        </p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8">
         <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700 hover:shadow-2xl">
           <div class="text-6xl mb-4">🚀</div>
           <h3 class="text-2xl font-semibold">No sign-up needed</h3>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400">Users can start immediately. That removes friction and helps first-time visitors reach the editor faster.</p>
+          <p class="mt-4 text-zinc-600 dark:text-zinc-400">
+            Users can start immediately. That removes friction and helps first-time visitors reach the editor faster.
+          </p>
         </div>
         <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700 hover:shadow-2xl">
           <div class="text-6xl mb-4">🎨</div>
           <h3 class="text-2xl font-semibold">Template-first flow</h3>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400">Templates define the structure, so the user sees the right fields without extra setup or confusion.</p>
+          <p class="mt-4 text-zinc-600 dark:text-zinc-400">
+            Templates define the structure, so the user sees the right fields without extra setup or confusion.
+          </p>
         </div>
         <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700 hover:shadow-2xl">
           <div class="text-6xl mb-4">⚡</div>
           <h3 class="text-2xl font-semibold">Live preview always on</h3>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400">The preview stays in sync with the form in real time, so users trust what they will download.</p>
+          <p class="mt-4 text-zinc-600 dark:text-zinc-400">
+            The preview stays in sync with the form in real time, so users trust what they will download.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- EXPORT SECTION -->
-  <section class="max-w-screen-2xl mx-auto px-8 py-20">
+  <section class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
     <div class="grid md:grid-cols-12 gap-16 items-center">
       <div class="md:col-span-5">
-        <h2 class="text-5xl font-semibold tracking-[-1px]">Export is the final step.</h2>
-        <p class="mt-4 text-xl text-zinc-600 dark:text-zinc-400">Once the invoice is ready, the user can download it in the format they need without opening another tool.</p>
+        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-1px]">Export is the final step.</h2>
+        <p class="mt-4 text-lg md:text-xl text-zinc-600 dark:text-zinc-400">
+          Once the invoice is ready, the user can download it in the format they need without opening another tool.
+        </p>
       </div>
-      
+
       <div class="md:col-span-7 grid md:grid-cols-2 gap-8">
-        <!-- PDF Card -->
         <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700">
           <div class="flex items-center gap-x-4 mb-6">
             <div class="text-4xl">📕</div>
@@ -328,7 +405,6 @@
           </ul>
         </div>
 
-        <!-- Image Card -->
         <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700">
           <div class="flex items-center gap-x-4 mb-6">
             <div class="text-4xl">🖼️</div>
@@ -346,18 +422,19 @@
     </div>
   </section>
 
-  <!-- FINAL CTA -->
-  <div class="max-w-screen-2xl mx-auto px-8 mb-12">
-    <div class="bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 rounded-3xl p-16 text-white text-center relative overflow-hidden">
+  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <div class="bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 rounded-3xl p-8 md:p-16 text-white text-center relative overflow-hidden">
       <div class="max-w-2xl mx-auto">
-        <h3 class="text-4xl font-semibold tracking-[-1px]">Ready-to-use workflow, built for speed.</h3>
-        <p class="mt-4 text-lg opacity-90">Choose a template, fill the fields, review the live preview, and export. That is the entire journey. It feels simple for users and scalable for a SaaS product.</p>
-        
-        <div class="flex justify-center gap-x-4 mt-10">
-          <a href="templates.html" class="px-10 py-5 bg-white text-zinc-900 font-semibold rounded-3xl flex items-center gap-x-3 text-lg shadow-xl">
+        <h3 class="text-3xl md:text-4xl font-semibold tracking-[-1px]">Ready-to-use workflow, built for speed.</h3>
+        <p class="mt-4 text-base md:text-lg opacity-90">
+          Choose a template, fill the fields, review the live preview, and export. That is the entire journey. It feels simple for users and scalable for a SaaS product.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-10">
+          <a href="templates.html" class="px-8 py-4 bg-white text-zinc-900 font-semibold rounded-3xl flex items-center justify-center gap-x-3 text-base md:text-lg shadow-xl">
             Browse Templates
           </a>
-          <a href="editor.html" class="px-10 py-5 border border-white/40 hover:border-white font-semibold rounded-3xl flex items-center gap-x-3 text-lg">
+          <a href="editor.html" class="px-8 py-4 border border-white/40 hover:border-white font-semibold rounded-3xl flex items-center justify-center gap-x-3 text-base md:text-lg">
             Open Editor →
           </a>
         </div>
@@ -365,11 +442,12 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="border-t border-zinc-200 dark:border-zinc-800 py-12">
-    <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-y-6">
-      <p class="text-zinc-500 dark:text-zinc-400 text-sm">Lumira Invoicing — no sign-up, fast workflow, live preview, PDF export, and image export.</p>
-      
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-y-6">
+      <p class="text-zinc-500 dark:text-zinc-400 text-sm">
+        Lumira Invoicing — no sign-up, fast workflow, live preview, PDF export, and image export.
+      </p>
+
       <div class="flex items-center gap-x-8 text-sm font-medium">
         <a href="index.html" class="hover:text-blue-600">Home</a>
         <a href="templates.html" class="hover:text-blue-600">Templates</a>
@@ -378,49 +456,40 @@
     </div>
   </footer>
 
-  <!-- Floating feedback button -->
-<button onclick="window.open('https://forms.gle/31xLtR3Ek1b6p3F97','_blank')" 
-  class="floating-help fixed bottom-8 right-8 flex items-center gap-x-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white px-6 py-4 rounded-3xl font-semibold shadow-2xl hover:shadow-blue-500/50 transition-all">
-
-  <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  </svg>
-
-  Feedback
-</button>
+  <button onclick="window.open('https://forms.gle/31xLtR3Ek1b6p3F97','_blank')"
+    class="floating-help fixed bottom-8 right-8 flex items-center gap-x-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white px-6 py-4 rounded-3xl font-semibold shadow-2xl hover:shadow-blue-500/50 transition-all">
+    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    Feedback
+  </button>
 
   <script>
-    // Tailwind initialization
     function initializeTailwind() {
       return {
         config(userConfig = {}) {
           return {
             content: [],
-            theme: {
-              extend: {},
-            },
+            theme: { extend: {} },
             plugins: [],
             ...userConfig,
-          }
+          };
         },
         theme() {
           return {
             extend: {
-              colors: {
-                brand: '#2563eb'
-              }
+              colors: { brand: '#2563eb' }
             }
-          }
+          };
         }
-      }
+      };
     }
 
-    // Dark / Light mode
     function initTheme() {
       const THEME_KEY = 'lumira-theme';
       const toggle = document.getElementById('themeToggle');
       const icon = document.getElementById('themeIcon');
-      
+
       function applyTheme(isDark) {
         if (isDark) {
           document.documentElement.setAttribute('data-theme', 'dark');
@@ -433,9 +502,13 @@
           localStorage.setItem(THEME_KEY, 'light');
           icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />`;
         }
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute('content', isDark ? '#0f172a' : '#f8fafc');
+        }
       }
 
-      // Load saved theme
       const savedTheme = localStorage.getItem(THEME_KEY);
       if (savedTheme) {
         applyTheme(savedTheme === 'dark');
@@ -444,21 +517,19 @@
         applyTheme(prefersDark);
       }
 
-      // Toggle handler
       toggle.addEventListener('click', () => {
         const isDark = document.documentElement.classList.contains('dark');
         applyTheme(!isDark);
       });
     }
 
-    // Boot everything
     window.onload = function() {
       initializeTailwind();
       initTheme();
-      
-      // Optional: Add some subtle scroll animation
       console.log('%c🚀 Lumira How It Works – Premium SaaS UI loaded successfully', 'color:#2563eb;font-weight:700;font-size:13px');
     };
   </script>
+
+  <script src="https://pl29247227.profitablecpmratenetwork.com/ef/e4/66/efe466c259975d1f26f2eb0b556fbc86.js"></script>
 </body>
 </html>
