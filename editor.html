@@ -1,53 +1,72 @@
-<!DOCTYPE html><html lang="en" data-theme="light">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lumira Invoicing — Editor</title>
-  <meta name="theme-color" content="#f8fafc" />
-  <meta name="description" content="A clean WYSIWYG invoice editor with live preview and fast export." />
-  <meta name="robots" content="index,follow" />  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='lumiraGrad' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='4' width='40' height='40' rx='12' fill='url(%23lumiraGrad)'/%3E%3Cpath d='M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M26 14v6h6' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3Cline x1='18' y1='26' x2='30' y2='26' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='18' y1='30' x2='26' y2='30' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" type="image/svg+xml">
-  <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">  <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>  <style>
+  <title>Lumira Invoicing — Templates Gallery</title>
+  <meta name="description" content="Browse premium invoice templates and preview any design instantly without leaving the page." />
+  <meta name="theme-color" content="#08101d" />
+
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem("lumira-theme");
+        const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+        const initialTheme = savedTheme === "light" || savedTheme === "dark"
+          ? savedTheme
+          : (prefersLight ? "light" : "dark");
+
+        document.documentElement.setAttribute("data-theme", initialTheme);
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute("content", initialTheme === "light" ? "#f8fafc" : "#08101d");
+        }
+      } catch (error) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     :root {
-      --bg: #f5f7fb;
-      --bg-soft: #eef2f7;
-      --panel: #ffffff;
-      --panel-2: #f9fbff;
-      --border: #e5e7eb;
-      --border-strong: #d7dce5;
-      --text: #0f172a;
-      --muted: #64748b;
-      --muted-2: #94a3b8;
-      --brand: #2563eb;
-      --brand-2: #7c3aed;
-      --ok: #16a34a;
-      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
-      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
-      --radius: 20px;
-      --radius-lg: 24px;
-      --max: 1440px;
-      --preview-scale: 1;
-      --preview-base-width: 595px;
-      --preview-base-height: 842px;
-    }
-
-    html[data-theme="dark"] {
-      --bg: #07111f;
-      --bg-soft: #0b1728;
-      --panel: rgba(255, 255, 255, 0.06);
-      --panel-2: rgba(255, 255, 255, 0.08);
+      --bg: #08101d;
+      --bg-2: #0b1220;
+      --surface: rgba(255, 255, 255, 0.06);
+      --surface-2: rgba(255, 255, 255, 0.10);
+      --surface-solid: #0f172a;
       --border: rgba(255, 255, 255, 0.10);
-      --border-strong: rgba(96, 165, 250, 0.20);
+      --border-2: rgba(255, 255, 255, 0.14);
       --text: #edf4ff;
-      --muted: #a5b4cc;
-      --muted-2: #73819d;
+      --muted: #a6b3cb;
+      --muted-2: #76839f;
       --brand: #60a5fa;
       --brand-2: #8b5cf6;
       --ok: #22c55e;
       --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
       --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.18);
+      --radius: 22px;
+      --max: 1280px;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-2: #eef2f7;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --surface-solid: #ffffff;
+      --border: #e2e8f0;
+      --border-2: #d7e0ea;
+      --text: #0f172a;
+      --muted: #526075;
+      --muted-2: #7c8aa1;
+      --brand: #2563eb;
+      --brand-2: #7c3aed;
+      --ok: #16a34a;
+      --shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 14px 34px rgba(15, 23, 42, 0.06);
     }
 
     * { box-sizing: border-box; }
@@ -55,51 +74,43 @@
     html {
       scroll-behavior: smooth;
       background: var(--bg);
-      scroll-padding-top: 110px;
     }
 
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
       background:
-        radial-gradient(circle at 10% 0%, rgba(96, 165, 250, 0.12), transparent 28%),
-        radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.10), transparent 25%),
+        radial-gradient(circle at 10% 0%, rgba(96, 165, 250, 0.16), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(139, 92, 246, 0.16), transparent 25%),
         linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+      color: var(--text);
+      min-height: 100vh;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
 
     a { color: inherit; text-decoration: none; }
-    button, input, select, textarea { font: inherit; }
+    button, input, select { font: inherit; }
 
-    .page {
-      width: min(calc(100% - 24px), var(--max));
+    .container {
+      width: min(calc(100% - 32px), var(--max));
       margin: 0 auto;
-      padding: 14px 0 24px;
-      position: relative;
     }
 
-    .topbar {
+    .nav {
       position: sticky;
       top: 0;
-      z-index: 90;
-      margin-bottom: 14px;
-      background: color-mix(in srgb, var(--bg) 90%, transparent);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: var(--shadow-soft);
+      z-index: 60;
+      backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom: 1px solid var(--border);
     }
 
-    .topbar-inner {
+    .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      padding: 14px 16px;
+      gap: 16px;
+      padding: 16px 0;
       flex-wrap: wrap;
     }
 
@@ -112,236 +123,71 @@
     }
 
     .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       display: grid;
       place-items: center;
-      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+      box-shadow: 0 12px 30px rgba(96, 165, 250, 0.34);
       flex: 0 0 auto;
       overflow: hidden;
     }
 
     .brand-mark svg {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       display: block;
     }
 
     .brand-text {
       display: flex;
       flex-direction: column;
-      line-height: 1.08;
+      line-height: 1.1;
       min-width: 0;
     }
 
     .brand-text strong {
       font-size: 1rem;
       letter-spacing: 0.01em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .top-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 38px;
-      padding: 0 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-      white-space: nowrap;
-      flex: 0 0 auto;
-    }
-
-    .top-link:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
-      border-color: var(--border-strong);
-      background: var(--panel-2);
-    }
-
-    .theme-toggle {
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      display: inline-grid;
-      place-items: center;
-      cursor: pointer;
-      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-      flex: 0 0 auto;
-    }
-
-    .theme-toggle:hover {
-      transform: translateY(-1px);
-      background: var(--panel-2);
-      border-color: var(--border-strong);
-    }
-
-    .theme-toggle svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-      gap: 14px;
-      align-items: start;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      padding: 16px;
-      min-width: 0;
-    }
-
-    .form-panel { min-width: 0; }
-
-    .right-column {
-      display: grid;
-      gap: 12px;
-      min-width: 0;
-      position: sticky;
-      top: 92px;
-      align-self: start;
-    }
-
-    .section-head,
-    .preview-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .title {
-      margin: 0;
-      font-size: clamp(1.35rem, 2.6vw, 1.9rem);
-      letter-spacing: -0.03em;
-      line-height: 1.06;
-    }
-
-    .preview-head strong { font-size: 0.98rem; letter-spacing: -0.01em; }
-    .preview-head span { color: var(--muted); font-size: 0.86rem; }
-
-    .preview-shell {
-      padding: 10px;
-      border-radius: 18px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: calc(var(--preview-base-height) * var(--preview-scale) + 12px);
-    }
-
-    .preview-stage {
-      width: calc(var(--preview-base-width) * var(--preview-scale));
-      height: calc(var(--preview-base-height) * var(--preview-scale));
-      position: relative;
-      flex: 0 0 auto;
-      margin: 0 auto;
-      background: #ffffff;
-    }
-
-    #temp-render {
-      width: var(--preview-base-width);
-      min-width: var(--preview-base-width);
-      min-height: var(--preview-base-height);
-      background: #fff;
-      border: 1px solid #edf2f7;
-      border-radius: 16px;
-      overflow: visible;
-      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
-      margin: 0;
-      transform: none;
-      zoom: var(--preview-scale);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      backface-visibility: hidden;
-    }
-
-    #temp-render .invoice-template {
-      width: 595px !important;
-      min-width: 595px !important;
-      max-width: none !important;
-      margin: 0 !important;
-      background: #fff;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-    }
-
-    .sidebar-panel {
-      display: grid;
-      gap: 12px;
-    }
-
-    .sidebar-section {
-      padding: 14px;
-      border-radius: 18px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-    }
-
-    .sidebar-title {
-      margin: 0 0 10px 0;
-      font-size: 0.86rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .brand-text span {
+      font-size: 0.82rem;
       color: var(--muted);
-      font-weight: 800;
     }
 
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      flex: 0 0 auto;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       border: 0;
-      border-radius: 14px;
+      outline: 0;
       cursor: pointer;
-      font-weight: 800;
-      padding: 12px 14px;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      font-weight: 700;
+      border-radius: 16px;
+      padding: 13px 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border 0.2s ease, opacity 0.2s ease;
       white-space: nowrap;
     }
 
@@ -349,289 +195,518 @@
 
     .btn-primary {
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      color: #fff;
-      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+      color: white;
+      box-shadow: 0 18px 38px rgba(96, 165, 250, 0.22);
     }
 
     .btn-secondary {
-      background: var(--bg-soft);
+      background: var(--surface);
       color: var(--text);
       border: 1px solid var(--border);
     }
 
-    .btn-accent {
-      background: linear-gradient(135deg, #fb7185, #f97316);
-      color: #fff;
-      box-shadow: 0 12px 24px rgba(249,115,22,0.14);
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+      flex: 0 0 auto;
     }
 
-    .status-line {
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--muted);
-      min-height: 18px;
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(96,165,250,0.24);
+      background: var(--surface-2);
     }
 
-    .template-hidden { display: none !important; }
-
-    #invoice-form {
+    .icon-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
       display: block;
-      overflow: visible;
     }
 
-    #invoice-form .form-section {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px 16px;
-      margin-bottom: 14px;
-      padding: 16px;
+    .hero {
+      padding: 34px 0 18px;
+    }
+
+    .hero-box {
+      border-radius: 32px;
+      padding: 28px;
       border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--panel);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
-      align-items: start;
-      overflow: visible;
+      background:
+        radial-gradient(circle at top right, rgba(96,165,250,0.18), transparent 26%),
+        radial-gradient(circle at left bottom, rgba(139,92,246,0.16), transparent 25%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      box-shadow: var(--shadow);
     }
 
-    #invoice-form .full-span { grid-column: 1 / -1; }
-
-    #invoice-form .section-title {
-      grid-column: 1 / -1;
-      font-weight: 800;
-      font-size: 15px;
-      margin-bottom: 2px;
-      color: var(--text);
-      letter-spacing: -0.01em;
+    html[data-theme="light"] .hero-box {
+      background:
+        radial-gradient(circle at top right, rgba(96,165,250,0.10), transparent 26%),
+        radial-gradient(circle at left bottom, rgba(139,92,246,0.08), transparent 25%),
+        linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.92));
     }
 
-    #invoice-form .field-row {
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--ok) 18%, transparent);
+      flex: 0 0 auto;
+    }
+
+    h1 {
       margin: 0;
-      min-width: 0;
+      font-size: clamp(2.2rem, 5vw, 4.3rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      max-width: 13ch;
+    }
+
+    .highlight {
+      background: linear-gradient(90deg, #ffffff 0%, #b9d5ff 35%, #b7a7ff 70%, #ffffff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    html[data-theme="light"] .highlight {
+      background: linear-gradient(90deg, #0f172a 0%, #2563eb 35%, #7c3aed 70%, #0f172a 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-copy {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 64ch;
+    }
+
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+
+    .pill svg { width: 16px; height: 16px; fill: var(--ok); }
+
+    .stats {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border-radius: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+      text-transform: capitalize;
+    }
+
+    .stat-card span {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.94rem;
+    }
+
+    .toolbar {
+      padding: 18px 0 6px;
+    }
+
+    .toolbar-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .toolbar-box h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      letter-spacing: -0.03em;
+    }
+
+    .toolbar-box p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 62ch;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.35fr 0.8fr auto;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .input,
+    .select {
+      width: 100%;
+      height: 54px;
+      padding: 0 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+    }
+
+    .input::placeholder { color: var(--muted-2); }
+    .select option { color: #111827; }
+
+    .count {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      white-space: nowrap;
+      height: 54px;
+    }
+
+    .count strong { color: var(--text); }
+
+    .gallery {
+      padding: 10px 0 28px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .template-card {
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.24s ease, border 0.24s ease, box-shadow 0.24s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    html[data-theme="light"] .template-card {
+      background: #ffffff;
+    }
+
+    .template-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(96,165,250,0.28);
+      box-shadow: 0 22px 44px rgba(0,0,0,0.18);
+    }
+
+    .template-preview {
+      position: relative;
+      aspect-ratio: 0.76 / 1;
+      background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(17,24,39,0.92));
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .template-preview-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,0.08);
+      display: grid;
+      place-items: center;
+    }
+
+    .template-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .template-badge {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      z-index: 2;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.74);
+      color: #e9f2ff;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.78rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .template-body {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .template-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .template-title-row h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .template-title-row span {
+      color: var(--muted-2);
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .template-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .section-note {
+      padding: 0 0 54px;
+      color: var(--muted-2);
+      line-height: 1.7;
+      font-size: 0.94rem;
+    }
+
+    .footer {
+      padding: 22px 0 28px;
+      border-top: 1px solid var(--border);
+      color: var(--muted-2);
+      font-size: 0.92rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 200;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-panel {
+      width: min(98vw, 1440px);
+      max-height: 94vh;
+      background: #0a1322;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.5);
       display: flex;
       flex-direction: column;
     }
 
-    #invoice-form .field-row label {
+    html[data-theme="light"] .modal-panel {
+      background: #ffffff;
+      border-color: var(--border);
+    }
+
+    .modal-head {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin: 0 0 8px 0;
-      font-weight: 700;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+
+    html[data-theme="light"] .modal-head {
+      background: #f8fafc;
+      border-bottom-color: var(--border);
+    }
+
+    .modal-head strong {
+      font-size: 1rem;
+      letter-spacing: -0.01em;
       color: var(--text);
-      font-size: 13px;
-      line-height: 1.2;
     }
 
-    #invoice-form .field-row input,
-    #invoice-form .field-row textarea,
-    #invoice-form .field-row select {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--border-strong);
-      background: var(--panel);
-      color: var(--text);
-      outline: none;
-      box-sizing: border-box;
-      font-size: 14px;
-      line-height: 1.45;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease, background 0.18s ease;
-    }
-
-    #invoice-form .field-row input::placeholder,
-    #invoice-form .field-row textarea::placeholder {
-      color: var(--muted-2);
-    }
-
-    #invoice-form .field-row input:focus,
-    #invoice-form .field-row textarea:focus,
-    #invoice-form .field-row select:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 3px rgba(96,165,250,0.14);
-    }
-
-    #invoice-form .field-row textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    #invoice-form .logo-section {
-      background: var(--panel);
-      border-color: #dbeafe;
-    }
-
-    #invoice-form .items-section {
-      background: var(--panel);
-    }
-
-    #items-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-      table-layout: fixed;
-    }
-
-    #items-table thead th {
-      background: rgba(15, 23, 42, 0.04);
-      color: var(--text);
-      font-size: 13px;
-    }
-
-    #items-table th,
-    #items-table td {
-      padding: 10px 8px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-      vertical-align: top;
-    }
-
-    #items-table th:first-child,
-    #items-table td:first-child {
-      width: 42%;
-      min-width: 320px;
-    }
-
-    #items-table th:nth-child(2),
-    #items-table td:nth-child(2) {
-      width: 16%;
-      min-width: 90px;
-    }
-
-    #items-table th:nth-child(3),
-    #items-table td:nth-child(3) {
-      width: 16%;
-      min-width: 110px;
-    }
-
-    #items-table th:nth-child(4),
-    #items-table td:nth-child(4) {
-      width: 18%;
-      min-width: 130px;
-    }
-
-    #items-table th:nth-child(5),
-    #items-table td:nth-child(5) {
-      width: 8%;
-      min-width: 92px;
-    }
-
-    #items-table tbody tr:last-child td { border-bottom: 0; }
-
-    #items-table input {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.30);
-      background: var(--panel);
-      color: var(--text);
-      outline: none;
-      font-size: 13px;
-      min-width: 0;
-    }
-
-    #items-table input[data-field="line_total"],
-    #items-table td:nth-child(5) input {
-      font-weight: 800;
-      color: #0f172a;
-      background: linear-gradient(180deg, #ffffff, #f8fbff);
-      border-color: rgba(37, 99, 235, 0.18);
-      opacity: 1 !important;
-      visibility: visible !important;
-      display: block !important;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    #items-table td:first-child input,
-    #items-table td:first-child textarea {
-      min-width: 280px;
-    }
-
-    #items-table input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 3px rgba(96,165,250,0.12);
-    }
-
-    .table-wrap {
-      overflow-x: auto;
+    .modal-close {
+      width: 42px;
+      height: 42px;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--panel);
-    }
-
-    .invoice-inline-edit {
-      outline: none;
-      border-radius: 6px;
-      padding: 0 2px;
-      cursor: text;
-      transition: background 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .invoice-inline-edit:focus {
-      background: rgba(37, 99, 235, 0.08);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.10);
-    }
-
-    .mobile-dock { display: none; }
-
-    .feedback-fab {
-      position: fixed;
-      right: 24px;
-      bottom: 24px;
-      z-index: 150;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 20px;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.95rem;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
-      border: none;
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      text-decoration: none;
+      font-size: 18px;
+      line-height: 1;
     }
 
-    .feedback-fab:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.4);
+    .modal-body {
+      padding: 12px;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(96,165,250,0.10), transparent 28%),
+        linear-gradient(180deg, #0b1220, #090f1b);
     }
 
-    .feedback-fab svg {
-      width: 19px;
-      height: 19px;
-      stroke: #fff;
-      stroke-width: 2.2;
+    html[data-theme="light"] .modal-body {
+      background: #eef2f7;
+    }
+
+    .modal-body img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 88vh;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 16px 44px rgba(0,0,0,0.28);
+      image-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      transform: translateZ(0);
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 28px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      flex: 0 0 auto;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      background: var(--surface-2);
+      border-color: rgba(96,165,250,0.24);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
       fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
     }
 
-    .splash-note {
-      display: none;
-    }
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
 
-    @media (max-width: 1180px) {
-      .workspace { grid-template-columns: 1fr; }
-      .right-column { position: static; }
+      .controls {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .count {
+        grid-column: 1 / -1;
+        justify-content: center;
+      }
     }
 
     @media (max-width: 760px) {
-      .page {
-        width: min(calc(100% - 16px), var(--max));
-        padding-top: 10px;
-        padding-bottom: 100px;
-      }
+      .nav-links { display: none; }
 
-      .topbar {
-        border-radius: 18px;
-      }
-
-      .topbar-inner {
-        padding: 10px 12px;
+      .nav-inner {
         flex-wrap: nowrap;
         align-items: center;
-        gap: 10px;
       }
 
       .brand {
@@ -639,225 +714,71 @@
         flex: 1 1 auto;
       }
 
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brand-mark svg {
+        width: 40px;
+        height: 40px;
+      }
+
       .brand-text strong {
-        font-size: 0.92rem;
-        line-height: 1.1;
+        font-size: 0.95rem;
       }
 
       .brand-text span {
-        display: none;
+        font-size: 0.74rem;
       }
 
-      .card {
-        padding: 14px;
-        border-radius: 18px;
-      }
-
-      .preview-shell {
-        padding: 8px;
-        justify-content: center;
-        background: #fff;
-      }
-
-      .preview-stage {
-        background: #fff;
-      }
-
-      .top-actions {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: nowrap;
+      .nav-actions {
         width: auto;
-        min-width: 0;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
         flex: 0 0 auto;
+        margin-left: auto;
       }
 
-      .top-actions::-webkit-scrollbar { display: none; }
-
-      .top-link,
-      .theme-toggle {
-        height: 32px;
-        min-height: 32px;
-        padding: 0 10px;
-        font-size: 11px;
-        border-radius: 999px;
-        flex: 0 0 auto;
-        white-space: nowrap;
-      }
-
-      .theme-toggle {
-        width: 32px;
-        padding: 0;
-      }
-
-      #invoice-form .form-section {
+      .hero-grid,
+      .gallery-grid,
+      .controls {
         grid-template-columns: 1fr;
       }
 
-      #invoice-form .full-span { grid-column: auto; }
-
-      #invoice-form .field-row textarea {
-        min-height: 96px;
+      .hero-box {
+        padding: 22px;
       }
 
-      #items-table {
-        min-width: 0;
-      }
-
-      #items-table thead {
-        display: none;
-      }
-
-      #items-table,
-      #items-table tbody,
-      #items-table tr,
-      #items-table td {
-        display: block;
+      .template-actions .btn,
+      .nav-actions .btn,
+      .controls .btn {
         width: 100%;
       }
 
-      #items-table tr {
-        margin-bottom: 12px;
-        padding: 10px 12px;
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: var(--panel);
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+      .nav-actions .theme-toggle {
+        width: 42px;
+        height: 42px;
+        padding: 0;
       }
 
-      #items-table td {
-        padding: 8px 0;
-        border-bottom: 0;
-      }
-
-      #items-table td::before {
-        content: attr(data-label);
-        display: block;
-        margin-bottom: 6px;
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--muted);
-      }
-
-      #items-table input,
-      #items-table td:first-child input,
-      #items-table td:first-child textarea {
-        min-width: 0 !important;
-        width: 100%;
-      }
-
-      #items-table td:last-child button {
-        width: 100%;
-      }
-
-      .feedback-fab {
-        right: 16px;
-        bottom: 70px;
-        padding: 12px 18px;
-        font-size: 0.9rem;
-      }
-
-      .mobile-dock {
-        position: fixed;
-        left: 12px;
-        right: 12px;
-        bottom: 10px;
-        z-index: 140;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        padding: 6px;
-        border-radius: 16px;
-        background: color-mix(in srgb, var(--bg) 88%, transparent);
-        backdrop-filter: blur(16px);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-soft);
-      }
-
-      .dock-btn {
-        height: 38px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: var(--panel);
-        color: var(--text);
-        font-size: 0.85rem;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      .dock-btn.is-active {
-        background: linear-gradient(135deg, var(--brand), var(--brand-2));
-        color: #fff;
-        border-color: transparent;
-      }
-
-      .page[data-mobile-mode="form"] .right-column,
-      .page[data-mobile-mode="preview"] .form-panel {
-        display: none !important;
-      }
-
-      .page[data-mobile-mode="preview"] .preview-shell {
-        min-height: 85vh !important;
-        padding: 16px 8px;
-        background: #ffffff;
-        align-items: flex-start;
-      }
-
-      .page[data-mobile-mode="preview"] .preview-stage {
-        width: 100% !important;
-        max-width: none;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15) !important;
-      }
-
-      .page[data-mobile-mode="preview"] .right-column {
-        position: static !important;
-        display: grid !important;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .page { width: min(calc(100% - 12px), var(--max)); }
-
-      .title { font-size: 1.18rem; }
-
-      .preview-head {
-        align-items: flex-start;
-      }
-
-      .card { padding: 12px; }
-
-      .feedback-fab {
-        right: 12px;
-        bottom: 70px;
-        padding: 11px 16px;
-      }
-
-      #items-table input[data-field="line_total"],
-      #items-table td:nth-child(5) input {
-        font-size: 12px;
+      .template-title-row {
+        flex-direction: column;
       }
     }
   </style>
-  
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-53W9XQJY6X');
-</script>
-
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-53W9XQJY6X');
+  </script>
 </head>
 <body>
-  <div class="page" id="top" data-mobile-mode="form">
-    <header class="topbar">
-      <div class="topbar-inner">
+  <header class="nav">
+    <div class="container">
+      <div class="nav-inner">
         <a class="brand" href="index.html" aria-label="Lumira Invoicing home">
           <div class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -867,314 +788,358 @@
                   <stop offset="100%" stop-color="#3b82f6"/>
                 </linearGradient>
               </defs>
+
               <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#lumiraGrad)"/>
+
               <path d="M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z"
                     fill="none"
                     stroke="white"
                     stroke-width="2"
                     stroke-linejoin="round"/>
+
               <path d="M26 14v6h6"
                     fill="none"
                     stroke="white"
                     stroke-width="2"
                     stroke-linejoin="round"/>
+
               <line x1="18" y1="26" x2="30" y2="26" stroke="white" stroke-width="2" stroke-linecap="round"/>
               <line x1="18" y1="30" x2="26" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
           <div class="brand-text">
             <strong>Lumira Invoicing</strong>
+            <span>Templates gallery</span>
           </div>
-        </a><div class="top-actions">
-      <a class="top-link" href="help.html">Help &amp; Guide</a>
-      <a class="top-link" href="templates.html">Change Template</a>
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Switch theme">
-        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#gallery">Templates</a>
+          <a href="how-it-works.html">How it works</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Switch theme">
+            <svg id="themeIcon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="5"></circle>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-box">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                Fast selection • no sign-up • production ready
+              </div>
+              <h1>Pick a <span class="highlight">template</span> and start in seconds.</h1>
+              <p class="hero-copy">
+                Browse premium invoice layouts in one clean gallery, choose the one that fits your brand, and preview it instantly on this page.
+              </p>
+
+              <div class="hero-points">
+                <div class="pill">
+                  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.2-3.6-3.6 1.4-1.4 2.2 2.2 4.8-4.8 1.4 1.4z"/></svg>
+                  Preview stays on page
+                </div>
+                <div class="pill">
+                  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.2-3.6-3.6 1.4-1.4 2.2 2.2 4.8-4.8 1.4 1.4z"/></svg>
+                  Only template names shown
+                </div>
+                <div class="pill">
+                  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1 14.2-3.6-3.6 1.4-1.4 2.2 2.2 4.8-4.8 1.4 1.4z"/></svg>
+                  Built for fast browsing
+                </div>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="stat-card">
+                <strong id="statTemplateCount">11 templates</strong>
+                <span>Each design appears in a compact, consistent card.</span>
+              </div>
+              <div class="stat-card">
+                <strong>Fast browsing</strong>
+                <span>Search and open preview without extra clutter or long text blocks.</span>
+              </div>
+              <div class="stat-card">
+                <strong>Clean flow</strong>
+                <span>Gallery → preview → editor, with a smooth product feel.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar" id="gallery">
+      <div class="container">
+        <div class="toolbar-box">
+          <div>
+            <h2>Choose from premium invoice templates.</h2>
+            <p>Search by name and open a full preview without leaving this page.</p>
+          </div>
+        </div>
+
+        <div class="controls" aria-label="Gallery controls">
+          <input id="searchInput" class="input" type="search" placeholder="Search template names..." autocomplete="off" />
+          <select id="filterSelect" class="select" aria-label="Filter templates by category">
+            <option value="all">All categories</option>
+            <option value="business">Business</option>
+            <option value="minimal">Minimal</option>
+            <option value="creative">Creative</option>
+            <option value="dark">Dark</option>
+          </select>
+          <div class="count"><strong id="countValue">0</strong> templates available</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="container">
+        <div class="gallery-grid" id="templateGrid"></div>
+      </div>
+    </section>
+
+    <section class="section-note" id="how">
+      <div class="container">
+        <strong style="color: var(--text);">Flow:</strong>
+        templates.html → choose template → preview in modal → use template in editor.
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>© <span id="year"></span> Lumira Invoicing. Clean invoice generation made simple.</div>
+        <div>No sign-up • Free templates • Unlimited downloads</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="previewModal" class="modal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+      <div class="modal-head">
+        <strong id="previewTitle">Template Preview</strong>
+        <button class="modal-close" id="closePreview" type="button" aria-label="Close preview">✕</button>
+      </div>
+      <div class="modal-body">
+        <img id="previewImage" alt="Template preview" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const templates = [
+      { id: 1, name: "Executive Blue", category: "business", badge: "Popular", image: "assets/templates/template-1.png" },
+      { id: 2, name: "Minimal Pro", category: "minimal", badge: "Simple", image: "assets/templates/template-2.png" },
+      { id: 3, name: "Modern Slate", category: "business", badge: "New", image: "assets/templates/template-3.png" },
+      { id: 4, name: "Creative Accent", category: "creative", badge: "Bold", image: "assets/templates/template-4.png" },
+      { id: 5, name: "Dark Premium", category: "dark", badge: "Premium", image: "assets/templates/template-5.png" },
+      { id: 6, name: "Soft Gray", category: "minimal", badge: "Clean", image: "assets/templates/template-6.png" },
+      { id: 7, name: "Agency Flow", category: "business", badge: "Agency", image: "assets/templates/template-7.png" },
+      { id: 8, name: "Compact Invoice", category: "minimal", badge: "Compact", image: "assets/templates/template-8.png" },
+      { id: 9, name: "Royal Gradient", category: "creative", badge: "Stylish", image: "assets/templates/template-9.png" },
+      { id: 10, name: "Charcoal Edge", category: "dark", badge: "Sleek", image: "assets/templates/template-10.png" },
+      { id: 11, name: "Fintech Clean", category: "business", badge: "Latest", image: "assets/templates/template-11.png" }
+    ];
+
+    const grid = document.getElementById("templateGrid");
+    const searchInput = document.getElementById("searchInput");
+    const filterSelect = document.getElementById("filterSelect");
+    const countValue = document.getElementById("countValue");
+    const statTemplateCount = document.getElementById("statTemplateCount");
+    const year = document.getElementById("year");
+    const previewModal = document.getElementById("previewModal");
+    const previewImage = document.getElementById("previewImage");
+    const previewTitle = document.getElementById("previewTitle");
+    const closePreview = document.getElementById("closePreview");
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+
+    year.textContent = new Date().getFullYear();
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, (match) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;"
+      }[match]));
+    }
+
+    function setMetaThemeColor(theme) {
+      if (!metaThemeColor) return;
+      metaThemeColor.setAttribute("content", theme === "light" ? "#f8fafc" : "#08101d");
+    }
+
+    function setTheme(theme) {
+      const nextTheme = theme === "light" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", nextTheme);
+
+      try {
+        localStorage.setItem("lumira-theme", nextTheme);
+      } catch (error) {}
+
+      setMetaThemeColor(nextTheme);
+
+      if (nextTheme === "light") {
+        themeIcon.innerHTML = `
+          <path d="M21 12.79A9 9 0 1 1 12.21 3 7 7 0 0 0 21 12.79z"></path>
+        `;
+      } else {
+        themeIcon.innerHTML = `
           <circle cx="12" cy="12" r="5"></circle>
           <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+        `;
+      }
+    }
+
+    function initTheme() {
+      try {
+        const saved = localStorage.getItem("lumira-theme");
+        if (saved === "light" || saved === "dark") {
+          setTheme(saved);
+        } else {
+          const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+          setTheme(prefersLight ? "light" : "dark");
+        }
+      } catch (error) {
+        setTheme("dark");
+      }
+    }
+
+    function makeFallbackImage(title) {
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="950" viewBox="0 0 1200 950">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#111827" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </linearGradient>
+          </defs>
+          <rect width="1200" height="950" fill="url(#g)"/>
+          <rect x="70" y="70" width="1060" height="810" rx="40" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)"/>
+          <text x="110" y="160" fill="#e5eefc" font-family="Arial" font-size="54" font-weight="700">${escapeHtml(title)}</text>
+          <text x="110" y="220" fill="#a6b3cb" font-family="Arial" font-size="28">Preview image missing</text>
         </svg>
-      </button>
-    </div>
-  </div>
-</header>
+      `;
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+    }
 
-<main class="workspace">
-  <section class="card form-panel">
-    <div class="section-head">
-      <div>
-        <h1 class="title">Invoice editor</h1>
-      </div>
-    </div>
+    function openPreview(template) {
+      previewTitle.textContent = template.name;
+      previewImage.src = template.image;
+      previewImage.alt = template.name + " preview";
+      previewImage.onerror = function () {
+        this.onerror = null;
+        this.src = makeFallbackImage(template.name);
+      };
+      previewModal.classList.add("show");
+      previewModal.setAttribute("aria-hidden", "false");
+    }
 
-    <div id="invoice-form"></div>
-    <div id="status-line" class="status-line"></div>
+    function closePreviewModal() {
+      previewModal.classList.remove("show");
+      previewModal.setAttribute("aria-hidden", "true");
+      previewImage.src = "";
+      previewImage.onerror = null;
+    }
 
-    <div class="template-hidden">
-      <label for="template-select">Template</label>
-      <select id="template-select">
-        <option value="1">1. Golden Blue Classic</option>
-        <option value="2">2. Modern Triangles</option>
-        <option value="3">3. Teal Corporate</option>
-        <option value="4">4. Curve Dark</option>
-        <option value="5">5. Royale Gold</option>
-        <option value="6">6. Vibrant Gradient</option>
-        <option value="7">7. Purple Gold</option>
-        <option value="8">8. Black &amp; Gold</option>
-        <option value="9">9. Rust Modern</option>
-        <option value="10">10. Clean Minimal</option>
-        <option value="11">11. Dark Professional</option>
-      </select>
-    </div>
-  </section>
-
-  <div class="right-column">
-    <section class="card preview-panel">
-      <div class="preview-head">
-        <div>
-          <strong>Live Preview</strong>
+    function createCard(template) {
+      const article = document.createElement("article");
+      article.className = "template-card";
+      article.innerHTML = `
+        <div class="template-preview">
+          <div class="template-badge">${escapeHtml(template.badge)}</div>
+          <div class="template-preview-inner">
+            <img src="${escapeHtml(template.image)}" alt="${escapeHtml(template.name)} preview" loading="lazy">
+          </div>
         </div>
-      </div>
-
-      <div class="preview-shell">
-        <div class="preview-stage">
-          <div id="temp-render"></div>
+        <div class="template-body">
+          <div class="template-title-row">
+            <div>
+              <h3>${escapeHtml(template.name)}</h3>
+              <span>Template #${template.id}</span>
+            </div>
+          </div>
+          <div class="template-actions">
+            <button class="btn btn-secondary" type="button" data-action="preview">Preview</button>
+            <a class="btn btn-primary" href="editor.html?template=${template.id}">Use Template</a>
+          </div>
         </div>
-      </div>
-    </section>
+      `;
 
-    <section class="card sidebar-panel">
-      <div class="sidebar-section">
-        <div class="sidebar-title">Actions</div>
-        <button id="preview-btn" class="btn btn-secondary" type="button">Refresh Preview</button>
-      </div>
+      const img = article.querySelector("img");
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = makeFallbackImage(template.name);
+      };
 
-      <div class="sidebar-section">
-        <div class="sidebar-title">Export</div>
-        <div class="actions">
-          <button id="download-btn" class="btn btn-primary" type="button">Download PDF</button>
-          <button id="download-image-btn" class="btn btn-accent" type="button">Download Image</button>
-        </div>
-      </div>
-    </section>
-  </div>
-</main>
+      article.querySelector('[data-action="preview"]').addEventListener("click", () => openPreview(template));
+      img.addEventListener("click", () => openPreview(template));
+      return article;
+    }
 
-  </div>  <div class="mobile-dock" aria-label="Mobile editor actions">
-    <button id="mobile-form-btn" class="dock-btn is-active" type="button">Form</button>
-    <button id="mobile-preview-btn" class="dock-btn" type="button">Preview</button>
-    <button id="mobile-refresh-btn" class="dock-btn" type="button">Refresh</button>
- 
-  </button>  <script src="config.js"></script>  <script src="templates/template1.js"></script>  <script src="templates/template2.js"></script>  <script src="templates/template3.js"></script>  <script src="templates/template4.js"></script>  <script src="templates/template5.js"></script>  <script src="templates/template6.js"></script>  <script src="templates/template7.js"></script>  <script src="templates/template8.js"></script>  <script src="templates/template9.js"></script>  <script src="templates/template10.js"></script>  <script src="templates/template11.js"></script>  <script src="modules/state.js"></script>  <script src="modules/utils.js"></script>  <script src="modules/calculations.js"></script>  <script src="modules/form-builder.js"></script>  <script src="modules/template-render.js"></script>  <script src="editor-core.js"></script>  <script src="editor.js"></script>  <script>
-    (function () {
-      const feedbackUrl = 'https://forms.gle/31xLtR3Ek1b6p3F97';
-      const feedbackFab = document.getElementById('feedbackFab');
-      const themeToggle = document.getElementById('themeToggle');
-      const themeIcon = document.getElementById('themeIcon');
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-      const root = document.documentElement;
-      const previewShell = document.querySelector('.preview-shell');
-      const pageContainer = document.getElementById('top');
+    function renderGallery() {
+      const query = searchInput.value.trim().toLowerCase();
+      const category = filterSelect.value;
 
-      if (feedbackFab) {
-        feedbackFab.addEventListener('click', () => {
-          window.open(feedbackUrl, '_blank', 'noopener,noreferrer');
-        });
-      }
-
-      function applyTheme(theme) {
-        const nextTheme = theme === 'dark' ? 'dark' : 'light';
-        root.setAttribute('data-theme', nextTheme);
-        localStorage.setItem('lumira-theme', nextTheme);
-
-        if (metaThemeColor) {
-          metaThemeColor.setAttribute('content', nextTheme === 'dark' ? '#07111f' : '#f8fafc');
-        }
-
-        if (themeIcon) {
-          themeIcon.innerHTML = nextTheme === 'dark'
-            ? `<circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>`
-            : `<path d="M21 12.79A9 9 0 1 1 12.21 3 7 7 0 0 0 21 12.79z"></path>`;
-        }
-      }
-
-      function initTheme() {
-        const saved = localStorage.getItem('lumira-theme');
-        applyTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-      }
-
-      function parseAmount(value) {
-        const raw = String(value ?? '').trim();
-        if (!raw) return 0;
-        const cleaned = raw.replace(/[^0-9.-]/g, '');
-        const number = Number(cleaned);
-        return Number.isFinite(number) ? number : 0;
-      }
-
-      function formatAmount(value) {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return '0';
-        const fixed = Math.round((n + Number.EPSILON) * 100) / 100;
-        return String(fixed.toFixed(2)).replace(/\.00$/, '');
-      }
-
-      function syncLineTotals() {
-        const table = document.getElementById('items-table');
-        if (!table) return;
-
-        const rows = table.querySelectorAll('tbody tr');
-        rows.forEach((row) => {
-          const qtyInput = row.querySelector('input[data-field="qty"], input[data-field="quantity"]');
-          const priceInput = row.querySelector('input[data-field="unit_price"]');
-          const totalInput = row.querySelector('input[data-field="line_total"]');
-
-          if (!totalInput) return;
-
-          totalInput.style.setProperty('opacity', '1', 'important');
-          totalInput.style.setProperty('visibility', 'visible', 'important');
-          totalInput.style.setProperty('display', 'block', 'important');
-          totalInput.readOnly = true;
-          totalInput.tabIndex = -1;
-
-          const qty = parseAmount(qtyInput ? qtyInput.value : 0);
-          const price = parseAmount(priceInput ? priceInput.value : 0);
-          const computed = qty * price;
-          const formatted = formatAmount(computed);
-
-          if (totalInput.value !== formatted) {
-            totalInput.value = formatted;
-          }
-        });
-      }
-
-      function bindLineTotalSync() {
-        if (window.__lumiraLineTotalSyncBound) return;
-        window.__lumiraLineTotalSyncBound = true;
-
-        document.addEventListener('input', (event) => {
-          if (event.target.closest && event.target.closest('#items-table')) {
-            requestAnimationFrame(syncLineTotals);
-          }
-        }, true);
-
-        document.addEventListener('change', (event) => {
-          if (event.target.closest && event.target.closest('#items-table')) {
-            requestAnimationFrame(syncLineTotals);
-          }
-        }, true);
-
-        const observer = new MutationObserver(() => {
-          requestAnimationFrame(syncLineTotals);
-        });
-
-        const formRoot = document.getElementById('invoice-form');
-        if (formRoot) {
-          observer.observe(formRoot, { childList: true, subtree: true });
-        }
-      }
-
-      function fitPreviewScale() {
-        if (!previewShell) return;
-
-        const isMobile = window.innerWidth <= 760;
-        const baseWidth = 595;
-        const shellWidth = previewShell.clientWidth || window.innerWidth;
-        const availableWidth = Math.max(320, shellWidth - 16);
-
-        const scale = isMobile ? Math.min(1, availableWidth / baseWidth) : 1;
-        root.style.setProperty('--preview-scale', String(scale));
-      }
-
-      let resizeTick = 0;
-      function scheduleFit() {
-        if (resizeTick) return;
-        resizeTick = window.requestAnimationFrame(() => {
-          resizeTick = 0;
-          fitPreviewScale();
-        });
-      }
-
-      themeToggle?.addEventListener('click', () => {
-        const current = root.getAttribute('data-theme') || 'light';
-        applyTheme(current === 'dark' ? 'light' : 'dark');
-        scheduleFit();
+      const filtered = templates.filter((template) => {
+        const haystack = (template.name + " " + template.category + " " + template.badge).toLowerCase();
+        const matchesQuery = !query || haystack.includes(query);
+        const matchesCategory = category === "all" || template.category === category;
+        return matchesQuery && matchesCategory;
       });
 
-      initTheme();
-      fitPreviewScale();
-      bindLineTotalSync();
+      grid.innerHTML = "";
 
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          syncLineTotals();
-          fitPreviewScale();
-        }, 80);
-        setTimeout(syncLineTotals, 300);
-        setTimeout(syncLineTotals, 800);
-      });
-
-      const previewObserver = new MutationObserver(() => {
-        scheduleFit();
-        syncLineTotals();
-      });
-
-      const tempRender = document.getElementById('temp-render');
-      if (tempRender) {
-        previewObserver.observe(tempRender, { childList: true, subtree: true });
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            No templates found. Try a different search or category.
+          </div>
+        `;
+        countValue.textContent = "0";
+        statTemplateCount.textContent = "0 templates";
+        return;
       }
 
-      window.addEventListener('resize', scheduleFit, { passive: true });
-      window.addEventListener('orientationchange', () => setTimeout(scheduleFit, 120));
+      filtered.forEach((template) => grid.appendChild(createCard(template)));
+      countValue.textContent = String(filtered.length);
+      statTemplateCount.textContent = templates.length + " templates";
+    }
 
-      function initMobileDock() {
-        const formBtn = document.getElementById('mobile-form-btn');
-        const previewBtn = document.getElementById('mobile-preview-btn');
-        const refreshBtn = document.getElementById('mobile-refresh-btn');
+    searchInput.addEventListener("input", renderGallery);
+    filterSelect.addEventListener("change", renderGallery);
+    closePreview.addEventListener("click", closePreviewModal);
 
-        if (!pageContainer || !formBtn || !previewBtn) return;
+    previewModal.addEventListener("click", (e) => {
+      if (e.target === previewModal) closePreviewModal();
+    });
 
-        function setMobileMode(mode) {
-          pageContainer.setAttribute('data-mobile-mode', mode);
-          formBtn.classList.toggle('is-active', mode === 'form');
-          previewBtn.classList.toggle('is-active', mode === 'preview');
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closePreviewModal();
+    });
 
-          if (mode === 'preview') {
-            requestAnimationFrame(() => {
-              fitPreviewScale();
-              syncLineTotals();
-            });
-          }
-        }
+    themeToggle.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      setTheme(current === "dark" ? "light" : "dark");
+    });
 
-        formBtn.addEventListener('click', () => setMobileMode('form'));
-        previewBtn.addEventListener('click', () => setMobileMode('preview'));
-
-        if (refreshBtn) {
-          refreshBtn.addEventListener('click', () => {
-            const mainRefresh = document.getElementById('preview-btn');
-            if (mainRefresh) mainRefresh.click();
-            else fitPreviewScale();
-            syncLineTotals();
-          });
-        }
-
-        if (window.innerWidth <= 760) {
-          setMobileMode('form');
-        }
-
-        window.addEventListener('resize', () => {
-          if (window.innerWidth > 760) {
-            pageContainer.removeAttribute('data-mobile-mode');
-          } else {
-            if (!pageContainer.getAttribute('data-mobile-mode')) {
-              pageContainer.setAttribute('data-mobile-mode', 'form');
-            }
-          }
-        });
-      }
-
-      initMobileDock();
-
-      console.log('%c✅ Lumira Invoicing Editor ready — mobile/desktop SaaS layout improved.', 'color:#2563eb; font-weight:700;');
-    })();
-  </script></body>
+    renderGallery();
+    initTheme();
+  </script>
+</body>
 </html>
