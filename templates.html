@@ -363,39 +363,6 @@
       font-size: 0.94rem;
     }
 
-    .ad-slot {
-      margin: 22px 0 8px;
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-      box-shadow: 0 14px 36px rgba(0,0,0,0.10);
-    }
-
-    html[data-theme="light"] .ad-slot {
-      background: #ffffff;
-    }
-
-    .ad-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      color: var(--muted-2);
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .ad-label::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--brand);
-      box-shadow: 0 0 0 6px rgba(96,165,250,0.12);
-    }
-
     .toolbar {
       padding: 18px 0 6px;
     }
@@ -799,6 +766,7 @@
     }
   </style>
 
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -909,12 +877,6 @@
             </div>
           </div>
         </div>
-
-        <section class="ad-slot" aria-label="Advertisement">
-          <div class="ad-label">Sponsored</div>
-          <script async="async" data-cfasync="false" src="https://pl29247228.profitablecpmratenetwork.com/9395b1a1cf2c840d940354dbe416f788/invoke.js"></script>
-          <div id="container-9395b1a1cf2c840d940354dbe416f788"></div>
-        </section>
       </div>
     </section>
 
@@ -1095,35 +1057,6 @@
       previewImage.onerror = null;
     }
 
-    function persistSelectedTemplate(template) {
-      const payload = {
-        id: template.id,
-        name: template.name,
-        category: template.category,
-        badge: template.badge,
-        image: template.image
-      };
-
-      try {
-        localStorage.setItem("lumira-selected-template", JSON.stringify(payload));
-        localStorage.setItem("lumira-selected-template-id", String(template.id));
-        localStorage.setItem("lumira-selected-template-name", template.name);
-        localStorage.setItem("lumira-selected-template-image", template.image);
-        sessionStorage.setItem("lumira-selected-template", JSON.stringify(payload));
-      } catch (error) {}
-    }
-
-    function buildEditorUrl(template) {
-      const params = new URLSearchParams({
-        template: String(template.id),
-        templateId: String(template.id),
-        selectedTemplate: String(template.id),
-        name: template.name
-      });
-
-      return `/editor.html?${params.toString()}`;
-    }
-
     function createCard(template) {
       const article = document.createElement("article");
       article.className = "template-card";
@@ -1143,31 +1076,19 @@
           </div>
           <div class="template-actions">
             <button class="btn btn-secondary" type="button" data-action="preview">Preview</button>
-            <a
-              class="btn btn-primary"
-              href="${buildEditorUrl(template)}"
-              data-action="use"
-            >Use Template</a>
+            <a class="btn btn-primary" href="editor.html?template=${template.id}">Use Template</a>
           </div>
         </div>
       `;
 
       const img = article.querySelector("img");
-      const previewButton = article.querySelector('[data-action="preview"]');
-      const useLink = article.querySelector('[data-action="use"]');
-
       img.onerror = function () {
         this.onerror = null;
         this.src = makeFallbackImage(template.name);
       };
 
-      previewButton.addEventListener("click", () => openPreview(template));
+      article.querySelector('[data-action="preview"]').addEventListener("click", () => openPreview(template));
       img.addEventListener("click", () => openPreview(template));
-
-      useLink.addEventListener("click", () => {
-        persistSelectedTemplate(template);
-      });
-
       return article;
     }
 
