@@ -6,126 +6,417 @@
   <title>Lumira Invoicing — How It Works</title>
   <meta name="theme-color" content="#f8fafc" />
   <meta name="description" content="Learn how Lumira Invoicing works: choose a template, fill the form, preview instantly, and export PDF or image without sign-up." />
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('lumira-theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme === 'dark' || savedTheme === 'light'
+          ? savedTheme
+          : (prefersDark ? 'dark' : 'light');
+
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) metaThemeColor.setAttribute('content', theme === 'dark' ? '#0f172a' : '#f8fafc');
+      } catch (err) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    :root {
-      --brand: #2563eb;
+    :root{
+      --bg:#f8fafc;
+      --bg2:#eef2f7;
+      --surface:rgba(255,255,255,.92);
+      --surface-strong:#ffffff;
+      --border:#e2e8f0;
+      --text:#0f172a;
+      --muted:#526075;
+      --muted2:#7c8aa1;
+      --brand:#2563eb;
+      --brand2:#7c3aed;
+      --ok:#16a34a;
+      --shadow:0 24px 70px rgba(15,23,42,.08);
+      --shadow-soft:0 14px 34px rgba(15,23,42,.06);
+      --radius:24px;
+      --container:1200px;
     }
 
-    * {
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, transform, box-shadow;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms;
+    html.dark{
+      --bg:#08101d;
+      --bg2:#0b1220;
+      --surface:rgba(15,23,42,.86);
+      --surface-strong:#0f172a;
+      --border:rgba(255,255,255,.10);
+      --text:#edf4ff;
+      --muted:#a6b3cb;
+      --muted2:#76839f;
+      --brand:#60a5fa;
+      --brand2:#8b5cf6;
+      --ok:#22c55e;
+      --shadow:0 24px 70px rgba(0,0,0,.34);
+      --shadow-soft:0 14px 34px rgba(0,0,0,.18);
     }
 
-    .tailwind-ready * {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    .hero-bg {
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(circle at 30% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.12) 0%, transparent 50%);
+        radial-gradient(circle at 10% 0%, rgba(96,165,250,.16), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(139,92,246,.16), transparent 25%),
+        linear-gradient(180deg,var(--bg) 0%, var(--bg) 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(calc(100% - 24px), var(--container)); margin:0 auto}
+
+    .nav{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter:blur(18px);
+      background:color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:14px 0; flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width:0; flex:1 1 auto;
+    }
+    .brand-mark{
+      width:42px;height:42px;border-radius:14px;
+      display:grid;place-items:center;overflow:hidden;flex:0 0 auto;
+      box-shadow:0 12px 30px rgba(96,165,250,.34);
+      color:#fff;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+    }
+    .brand-mark svg{width:100%;height:100%;display:block}
+    .brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+    .brand-text strong{font-size:1rem;letter-spacing:.01em}
+    .brand-text span{font-size:.82rem;color:var(--muted)}
+    .nav-links{
+      display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+      color:var(--muted);font-size:.95rem
+    }
+    .nav-links a:hover{color:var(--text)}
+    .nav-actions{
+      display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    }
+    .btn,.icon-btn,.social-btn,.theme-toggle,.feedback-fab{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      border:1px solid var(--border);background:var(--surface);color:var(--text);
+      border-radius:16px; cursor:pointer; transition:transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover,.icon-btn:hover,.social-btn:hover,.theme-toggle:hover,.feedback-fab:hover{transform:translateY(-1px)}
+    .btn{padding:14px 18px;font-weight:700}
+    .btn-primary{
+      border:0;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;
+      box-shadow:0 18px 38px rgba(96,165,250,.22);
+    }
+    .btn-secondary{
+      background:var(--surface);
+      color:var(--text);
+    }
+    .icon-btn,.theme-toggle,.social-btn{width:42px;height:42px;border-radius:14px;flex:0 0 auto}
+    .icon-btn svg,.btn svg,.social-btn svg,.theme-toggle svg,.feedback-fab svg{
+      width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;
     }
 
-    .dark .hero-bg {
+    .hero{padding:54px 0 22px}
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);
+      gap:28px; align-items:center;
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:8px 14px;border-radius:999px;background:var(--surface);
+      border:1px solid var(--border); color:var(--muted); font-size:.88rem; margin-bottom:18px;
+    }
+    .eyebrow-dot{width:8px;height:8px;border-radius:999px;background:var(--ok);box-shadow:0 0 0 6px color-mix(in srgb, var(--ok) 18%, transparent)}
+    h1{
+      margin:0;
+      font-size:clamp(2.2rem,5vw,4.8rem);
+      line-height:.98;
+      letter-spacing:-.04em;
+      max-width:12ch;
+    }
+    .highlight{
+      background:linear-gradient(90deg,#fff 0%, #b9d5ff 30%, #b7a7ff 65%, #fff 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    html.dark .highlight{
+      background:linear-gradient(90deg,#fff 0%, #b9d5ff 30%, #c7b4ff 65%, #fff 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .hero-copy{
+      margin:18px 0 0;
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.75;
+      max-width:64ch;
+    }
+    .hero-actions{
+      display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;
+    }
+    .hero-actions .btn{padding:14px 18px}
+    .hero-trust{
+      margin-top:24px;
+      display:flex; gap:18px; flex-wrap:wrap;
+      color:var(--muted2);
+      font-size:.92rem;
+    }
+    .trust-item strong{display:block;color:var(--text);font-size:1rem;margin-bottom:2px}
+    .showcase{padding:8px}
+    .glass-panel{
+      border-radius:30px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+    }
+    .preview-top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:18px 20px;border-bottom:1px solid var(--border);
+      background:var(--bg2);
+      flex-wrap:wrap;
+    }
+    .preview-badge{
+      padding:7px 12px;border-radius:999px;
+      background:rgba(96,165,250,.14);
+      border:1px solid rgba(96,165,250,.18);
+      font-size:.84rem;
+    }
+    .hero-mock{
+      padding:20px;
       background:
-        radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.25) 0%, transparent 50%),
-        radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.18) 0%, transparent 50%);
+        radial-gradient(circle at top right, rgba(139,92,246,.12), transparent 25%),
+        linear-gradient(180deg, rgba(15,23,42,.95), rgba(9,15,29,.95));
+    }
+    html:not(.dark) .hero-mock{background:#fff}
+    .fake-window{
+      border-radius:22px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      overflow:hidden;
+    }
+    .window-bar{
+      display:flex;align-items:center;gap:8px;
+      padding:14px 16px;border-bottom:1px solid var(--border);
+    }
+    .window-dot{width:10px;height:10px;border-radius:999px;background:var(--brand);opacity:.9}
+    .mock-body{
+      display:grid;
+      grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
+      min-height:420px;
+    }
+    .mock-editor{
+      padding:18px;border-right:1px solid var(--border);
+      background:var(--bg2);
+    }
+    .mock-editor h3,.mock-preview h3{margin:0 0 12px;font-size:1rem}
+    .mock-field{
+      height:16px;border-radius:999px;background:rgba(148,163,184,.18);margin-bottom:12px
+    }
+    .mock-field.w80{width:80%}.mock-field.w68{width:68%}.mock-field.w54{width:54%}.mock-field.w90{width:90%}
+    .mock-preview{
+      padding:18px;
+      background:
+        radial-gradient(circle at top right, rgba(96,165,250,.14), transparent 24%),
+        radial-gradient(circle at left bottom, rgba(139,92,246,.12), transparent 24%),
+        var(--surface-strong);
+    }
+    html:not(.dark) .mock-preview{background:linear-gradient(180deg,#f8fbff 0%, #fff 100%)}
+    .invoice-sheet{
+      border-radius:18px;
+      background:#fff;
+      border:1px solid rgba(148,163,184,.2);
+      box-shadow:0 16px 32px rgba(15,23,42,.08);
+      padding:16px;
+      color:#0f172a;
+    }
+    .invoice-sheet .row{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px
+    }
+    .invoice-sheet .brand-row{
+      display:flex;align-items:center;gap:10px;margin-bottom:14px
+    }
+    .sheet-logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--brand),var(--brand2))}
+    .sheet-title strong{display:block;font-size:.96rem}
+    .sheet-title span{display:block;color:#64748b;font-size:.84rem}
+    .sheet-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0
+    }
+    .sheet-box{
+      border-radius:14px;border:1px solid #e2e8f0;background:#f8fafc;padding:12px
+    }
+    .sheet-box label{
+      display:block;font-size:.76rem;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;font-weight:700
+    }
+    .sheet-box strong{font-size:.96rem}
+    .sheet-total{
+      margin-top:14px;border-radius:16px;background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+      box-shadow:0 14px 28px rgba(96,165,250,.2)
+    }
+    .sheet-total span{font-size:.82rem;opacity:.85}
+    .sheet-total strong{font-size:1.2rem}
+
+    .section{padding:26px 0 8px}
+    .section-heading{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px;
+    }
+    .section-heading h2{
+      margin:0;font-size:clamp(1.5rem,3vw,2.4rem);letter-spacing:-.03em
+    }
+    .section-heading p{
+      margin:0;color:var(--muted);max-width:58ch;line-height:1.65
+    }
+    .feature-grid,.workflow,.metrics{
+      display:grid;gap:16px
+    }
+    .feature-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .workflow{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .metrics{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .feature-card,.step-card,.metric{
+      padding:22px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-soft)
+    }
+    .feature-card:hover{transform:translateY(-4px);border-color:rgba(96,165,250,.25)}
+    .feature-icon{
+      width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg, rgba(96,165,250,.18), rgba(139,92,246,.18));
+      display:grid;place-items:center;border:1px solid var(--border);margin-bottom:16px;color:var(--brand)
+    }
+    .feature-icon svg{width:22px;height:22px;stroke:currentColor}
+    .feature-card h3,.step-card h3{margin:0 0 8px;font-size:1.08rem}
+    .feature-card p,.step-card p,.metric span{margin:0;color:var(--muted);line-height:1.7;font-size:.95rem}
+    .step-index{
+      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));font-weight:800;margin-bottom:14px;color:#fff;
+      box-shadow:0 12px 24px rgba(96,165,250,.2)
+    }
+    .metric strong{display:block;font-size:2rem;letter-spacing:-.04em;margin-bottom:6px}
+
+    .ad-slot{
+      margin:22px 0 8px;
+      padding:16px;border:1px solid var(--border);border-radius:24px;
+      background:var(--surface);box-shadow:var(--shadow-soft)
+    }
+    .ad-label{
+      display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;
+      color:var(--muted2);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em
+    }
+    .ad-label::before{
+      content:"";width:8px;height:8px;border-radius:999px;background:var(--brand);box-shadow:0 0 0 6px rgba(96,165,250,.12)
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(24px);
+    .feedback-panel{
+      padding:24px;border-radius:28px;background:var(--surface);border:1px solid var(--border);
+      display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;box-shadow:var(--shadow-soft)
+    }
+    .feedback-panel h3{margin:0 0 10px;font-size:1.4rem;letter-spacing:-.03em}
+    .feedback-panel p{margin:0;color:var(--muted);line-height:1.7;max-width:64ch}
+    .feedback-actions{display:flex;justify-content:flex-end}
+    .feedback-note{margin-top:12px;color:var(--muted2);font-size:.9rem}
+    .social-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .social-btn{
+      padding:10px 14px;border-radius:999px;
+      background:var(--surface);color:var(--text)
+    }
+    .social-btn svg{width:16px;height:16px}
+    .cta{padding:30px 0 80px}
+    .cta-box{
+      border-radius:34px;padding:34px;border:1px solid var(--border);
+      background:
+        radial-gradient(circle at top right, rgba(96,165,250,.22), transparent 30%),
+        radial-gradient(circle at left bottom, rgba(139,92,246,.22), transparent 32%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      box-shadow:var(--shadow)
+    }
+    .cta-box-inner{
+      display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap
+    }
+    .cta-copy h2{margin:0 0 10px;font-size:clamp(1.6rem,3vw,2.6rem);letter-spacing:-.03em}
+    .cta-copy p{margin:0;color:var(--muted);max-width:62ch;line-height:1.7}
+
+    .footer{
+      padding:20px 0 28px;color:var(--muted2);font-size:.92rem
+    }
+    .footer-inner{
+      display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:18px
+    }
+    .footer-links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+    .feedback-fab{
+      position:fixed; right:18px; bottom:18px; z-index:80;
+      padding:14px 18px;border-radius:999px;background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;border:0;box-shadow:0 22px 42px rgba(96,165,250,.28);font-weight:700
     }
 
-    .dark .glass {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(24px);
+    @media (max-width: 1100px){
+      .hero-grid{grid-template-columns:1fr; gap:22px}
+      .feature-grid,.workflow,.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .feedback-panel{grid-template-columns:1fr}
+      .mock-body{grid-template-columns:1fr}
+      .mock-editor{border-right:0;border-bottom:1px solid var(--border)}
     }
 
-    .step-connector {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(to bottom, #2563eb, #7c3aed);
-      opacity: 0.15;
-      z-index: -1;
-    }
-
-    .dark .step-connector {
-      background: linear-gradient(to bottom, #60a5fa, #a78bfa);
-    }
-
-    .floating-help {
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .ad-slot {
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      border-radius: 28px;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
-    }
-
-    .dark .ad-slot {
-      background: rgba(15, 23, 42, 0.72);
-      border-color: rgba(255, 255, 255, 0.10);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.20);
-    }
-
-    .ad-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgb(100 116 139);
-      margin-bottom: 12px;
-    }
-
-    .dark .ad-label {
-      color: rgb(148 163 184);
-    }
-
-    .ad-label::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.12);
-    }
-
-    @media (max-width: 768px) {
-      .mobile-stack {
-        flex-direction: column;
-        align-items: flex-start;
+    @media (max-width: 760px){
+      .nav-inner{flex-direction:column;align-items:stretch}
+      .brand{width:100%}
+      .nav-links{display:none}
+      .nav-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .nav-actions .btn,.nav-actions .icon-btn,.nav-actions .social-btn,.nav-actions .theme-toggle{width:100%}
+      .hero{padding:30px 0 14px}
+      h1{font-size:clamp(2.05rem,10vw,3.2rem);line-height:1.02;max-width:none}
+      .hero-copy{font-size:1rem;margin-top:14px}
+      .hero-actions,.cta-box-inner,.feedback-actions{flex-direction:column;align-items:stretch}
+      .hero-actions .btn,.cta-box-inner .btn,.feedback-actions .btn{width:100%}
+      .hero-trust{flex-direction:column;gap:12px}
+      .showcase{padding:0}
+      .preview-top{padding:14px 16px}
+      .hero-mock{padding:12px}
+      .window-bar{padding:12px 14px}
+      .mock-editor,.mock-preview{padding:14px}
+      .sheet-grid,.feature-grid,.workflow,.metrics{grid-template-columns:1fr}
+      .section{padding:22px 0 6px}
+      .section-heading{flex-direction:column;align-items:flex-start}
+      .section-heading p{max-width:none}
+      .feature-card,.step-card,.metric,.feedback-panel,.cta-box{padding:18px}
+      .cta{padding:24px 0 68px}
+      .footer-inner{flex-direction:column;align-items:flex-start}
+      .feedback-fab{
+        left:16px; right:16px; width:calc(100% - 32px);
+        display:flex; justify-content:center
       }
+      .hero .grid.grid-cols-4{grid-template-columns:1fr}
+      .hero .grid.grid-cols-4 .absolute{display:none}
+    }
 
-      .mobile-full {
-        width: 100%;
-      }
-
-      .floating-help {
-        right: 16px !important;
-        left: 16px !important;
-        justify-content: center;
-      }
+    @media (max-width: 480px){
+      .container{width:min(calc(100% - 20px), var(--container))}
+      .hero-copy,.section-heading p,.feature-card p,.step-card p,.metric span,.feedback-panel p,.cta-copy p{font-size:.98rem}
+      .glass-panel,.ad-slot,.cta-box{border-radius:20px}
+      .brand-mark{width:40px;height:40px}
+      .brand-text strong{font-size:.96rem}
+      .brand-text span{font-size:.74rem}
+      .hero .inline-flex.items-center.gap-x-2{width:100%;justify-content:center;text-align:center}
+      .preview-badge{width:100%;text-align:center}
+      .sheet-total,.invoice-sheet .row{flex-direction:column;align-items:flex-start}
     }
   </style>
 
@@ -138,396 +429,415 @@
     gtag('config', 'G-53W9XQJY6X');
   </script>
 
-  <script>
-    (function () {
-      try {
-        const savedTheme = localStorage.getItem('lumira-theme');
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const initialTheme = savedTheme === 'dark' || savedTheme === 'light'
-          ? savedTheme
-          : (prefersDark ? 'dark' : 'light');
-
-        document.documentElement.classList.toggle('dark', initialTheme === 'dark');
-        document.documentElement.setAttribute('data-theme', initialTheme);
-
-        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (metaThemeColor) {
-          metaThemeColor.setAttribute('content', initialTheme === 'dark' ? '#0f172a' : '#f8fafc');
-        }
-      } catch (error) {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Lumira Invoicing",
+    "url": "https://lumira.app/",
+    "description": "Free online invoice generator with multiple templates, no sign-up, live preview, and PDF export."
+  }
   </script>
 </head>
-
-<body class="tailwind-ready bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
-  <nav class="sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
-    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 gap-3 mobile-stack">
-        <a href="index.html" class="flex items-center gap-x-3 min-w-0">
-          <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-violet-600 rounded-2xl flex items-center justify-center shadow-inner flex-shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2z" />
+<body>
+  <header class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="brand" href="index.html" aria-label="Lumira Invoicing home">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="lumiraGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#2563eb"/>
+                  <stop offset="100%" stop-color="#3b82f6"/>
+                </linearGradient>
+              </defs>
+              <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#lumiraGrad)"/>
+              <path d="M16 14h10l6 6v14a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2V16a2 2 0 0 1 2-2z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M26 14v6h6" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="18" y1="26" x2="30" y2="26" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <line x1="18" y1="30" x2="26" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
-          <div class="min-w-0">
-            <span class="font-semibold tracking-[-0.5px] text-xl sm:text-2xl block leading-none">Lumira</span>
-            <span class="text-xs text-zinc-500 dark:text-zinc-400 font-medium block mt-1">Invoicing</span>
+          <div class="brand-text">
+            <strong>Lumira</strong>
+            <span>Invoicing</span>
           </div>
         </a>
 
-        <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end mobile-full">
-          <a href="templates.html"
-             class="group px-4 sm:px-6 py-2.5 text-sm font-semibold rounded-3xl flex items-center gap-x-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-5 h-5 text-zinc-500 group-hover:text-black dark:group-hover:text-white transition-colors duration-200"
-                 viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-              <rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-              <rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-              <rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            </svg>
-            <span class="tracking-tight">Templates</span>
-          </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="templates.html">Templates</a>
+          <a href="editor.html">Editor</a>
+          <a href="features.html">Features</a>
+        </nav>
 
-          <a href="editor.html"
-             class="px-4 sm:px-6 py-2.5 text-sm font-semibold bg-gradient-to-r from-blue-600 to-violet-600 text-white hover:shadow-xl hover:shadow-blue-500/30 rounded-3xl flex items-center gap-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276L20 10V18H4V6L8.553 3.724 12 6 15.447 3.724 20 6" />
+        <div class="nav-actions">
+          <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Switch theme">
+            <svg id="themeIcon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="5"></circle>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
             </svg>
+          </button>
+
+          <a class="btn btn-primary" href="editor.html">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Open Editor
           </a>
         </div>
       </div>
     </div>
-  </nav>
-
-  <header class="hero-bg pt-16 pb-20">
-    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-12 gap-16 items-center">
-        <div class="lg:col-span-7">
-          <div class="inline-flex items-center gap-x-2 bg-white dark:bg-zinc-900 shadow-inner border border-zinc-200 dark:border-zinc-700 rounded-3xl px-5 py-2 text-sm font-semibold text-blue-600 dark:text-blue-400 mb-6">
-            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-            NO SIGN-UP • INSTANT START
-          </div>
-
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-[-2px] leading-none mb-6">
-            Create professional<br>invoices in seconds.
-          </h1>
-
-          <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-xl mb-10">
-            Lumira keeps the flow simple: choose a template, fill the form, watch the live preview update instantly, then download the final invoice as PDF or image.
-          </p>
-
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <a href="editor.html"
-               class="px-7 py-4 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold rounded-3xl flex items-center justify-center sm:justify-start gap-x-3 hover:shadow-2xl hover:shadow-blue-500/40 text-base sm:text-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7-7 7M5 12h14" />
-              </svg>
-              Open Editor Now
-            </a>
-
-            <a href="templates.html"
-               class="px-7 py-4 border-2 border-zinc-300 dark:border-zinc-700 font-semibold rounded-3xl hover:bg-zinc-100 dark:hover:bg-zinc-900 flex items-center justify-center sm:justify-start gap-x-3 text-base sm:text-lg">
-              Browse Templates
-            </a>
-          </div>
-
-          <div class="flex items-center gap-x-8 mt-12">
-            <div class="flex -space-x-4">
-              <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-2xl flex items-center justify-center ring-2 ring-white dark:ring-zinc-950 text-blue-600">⚡</div>
-              <div class="w-8 h-8 bg-violet-100 dark:bg-violet-900 rounded-2xl flex items-center justify-center ring-2 ring-white dark:ring-zinc-950 text-violet-600">📄</div>
-              <div class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900 rounded-2xl flex items-center justify-center ring-2 ring-white dark:ring-zinc-950 text-emerald-600">📧</div>
-            </div>
-            <div>
-              <div class="text-sm font-semibold">Used by 12,487 freelancers &amp; teams</div>
-              <div class="text-xs text-zinc-500 dark:text-zinc-400">No account. No credit card. No setup.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-5">
-          <div class="glass rounded-3xl p-2 shadow-2xl border border-white/50 dark:border-zinc-700">
-            <div class="bg-white dark:bg-zinc-900 rounded-3xl p-8">
-              <div class="flex justify-between items-center mb-8">
-                <div class="font-semibold text-lg">Live Preview Flow</div>
-                <span class="text-xs font-bold uppercase tracking-[1px] px-4 py-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300 rounded-3xl">4 steps • 38 seconds</span>
-              </div>
-
-              <div class="grid grid-cols-4 gap-4">
-                <div class="text-center">
-                  <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-violet-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-inner">1</div>
-                  <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Choose template</div>
-                </div>
-                <div class="text-center relative">
-                  <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-violet-500 to-purple-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-inner">2</div>
-                  <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Fill form</div>
-                  <div class="absolute top-6 -right-1 text-blue-400">→</div>
-                </div>
-                <div class="text-center relative">
-                  <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-pink-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-inner">3</div>
-                  <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Live preview</div>
-                  <div class="absolute top-6 -right-1 text-blue-400">→</div>
-                </div>
-                <div class="text-center">
-                  <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-pink-500 to-rose-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-inner">4</div>
-                  <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Export</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section class="ad-slot mt-10 md:mt-14" aria-label="Advertisement">
-        <div class="ad-label">Sponsored</div>
-        <script async="async" data-cfasync="false" src="https://pl29247228.profitablecpmratenetwork.com/9395b1a1cf2c840d940354dbe416f788/invoke.js"></script>
-        <div id="container-9395b1a1cf2c840d940354dbe416f788"></div>
-      </section>
-    </div>
   </header>
 
-  <section class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20" id="how-it-works">
-    <div class="text-center mb-12">
-      <span class="px-6 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-3xl text-sm font-semibold tracking-widest">4 STEPS • ZERO FRICTION</span>
-      <h2 class="text-4xl md:text-5xl font-semibold tracking-[-1px] mt-4">The workflow stays short and clear.</h2>
-      <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mt-3 max-w-2xl mx-auto">
-        Everything is designed to remove friction. The user never needs to think about setup, accounts, or hidden steps.
-      </p>
-    </div>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">
+              <span class="eyebrow-dot"></span>
+              No sign-up • Instant start • Clean flow
+            </div>
+            <h1>Create professional<br><span class="highlight">invoices in seconds</span>.</h1>
+            <p class="hero-copy">
+              Lumira keeps the flow simple: choose a template, fill the form, watch the live preview update instantly, then download the final invoice as PDF or image.
+            </p>
 
-    <div class="grid md:grid-cols-4 gap-8 relative">
-      <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
-        <div class="flex justify-between">
-          <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-violet-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">1</div>
-          <span class="text-7xl font-black text-zinc-100 dark:text-zinc-800 group-hover:text-blue-100 transition-colors">01</span>
-        </div>
-        <h3 class="text-2xl font-semibold mt-8">Open Lumira and choose a template</h3>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          Users land on the website, open the template gallery, and pick a style that fits the brand. The template selection happens first so the form and preview are already aligned from the start.
-        </p>
-      </div>
+            <div class="hero-actions">
+              <a href="editor.html" class="btn btn-primary">
+                <svg viewBox="0 0 24 24"><path d="M14 5l7 7-7 7M5 12h14"/></svg>
+                Open Editor Now
+              </a>
+              <a href="templates.html" class="btn btn-secondary">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                Browse Templates
+              </a>
+            </div>
 
-      <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
-        <div class="flex justify-between">
-          <div class="w-12 h-12 bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">2</div>
-          <span class="text-7xl font-black text-zinc-100 dark:text-zinc-800 group-hover:text-violet-100 transition-colors">02</span>
-        </div>
-        <h3 class="text-2xl font-semibold mt-8">Fill the invoice form</h3>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          They enter business details, client details, invoice number, dates, item rows, tax, totals, notes, and payment info. Fields appear in a clean order so the workflow feels familiar and professional.
-        </p>
-      </div>
-
-      <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
-        <div class="flex justify-between">
-          <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">3</div>
-          <span class="text-7xl font-black text-zinc-100 dark:text-zinc-800 group-hover:text-purple-100 transition-colors">03</span>
-        </div>
-        <h3 class="text-2xl font-semibold mt-8">Watch the live preview update instantly</h3>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          Every character added or removed in the form updates the invoice preview right away. No refresh button, no manual sync, and no confusion between form data and the template.
-        </p>
-      </div>
-
-      <div class="relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-100 dark:border-zinc-800 hover:-translate-y-1 group">
-        <div class="flex justify-between">
-          <div class="w-12 h-12 bg-gradient-to-br from-pink-600 to-rose-600 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-inner">4</div>
-          <span class="text-7xl font-black text-zinc-100 dark:text-zinc-800 group-hover:text-pink-100 transition-colors">04</span>
-        </div>
-        <h3 class="text-2xl font-semibold mt-8">Download as PDF or image</h3>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          When the invoice looks right, users export it as a PDF for sending or printing, or as an image for quick sharing. The output is clean, client-ready, and fast to generate.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-white dark:bg-zinc-900 py-20 border-t border-b border-zinc-200 dark:border-zinc-800">
-    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-1px]">Why people keep using it.</h2>
-        <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mt-3">
-          The product feels light, clear, and professional. That makes it easier to return to the next time someone needs an invoice.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700 hover:shadow-2xl">
-          <div class="text-6xl mb-4">🚀</div>
-          <h3 class="text-2xl font-semibold">No sign-up needed</h3>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400">
-            Users can start immediately. That removes friction and helps first-time visitors reach the editor faster.
-          </p>
-        </div>
-        <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700 hover:shadow-2xl">
-          <div class="text-6xl mb-4">🎨</div>
-          <h3 class="text-2xl font-semibold">Template-first flow</h3>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400">
-            Templates define the structure, so the user sees the right fields without extra setup or confusion.
-          </p>
-        </div>
-        <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700 hover:shadow-2xl">
-          <div class="text-6xl mb-4">⚡</div>
-          <h3 class="text-2xl font-semibold">Live preview always on</h3>
-          <p class="mt-4 text-zinc-600 dark:text-zinc-400">
-            The preview stays in sync with the form in real time, so users trust what they will download.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-    <div class="grid md:grid-cols-12 gap-16 items-center">
-      <div class="md:col-span-5">
-        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-1px]">Export is the final step.</h2>
-        <p class="mt-4 text-lg md:text-xl text-zinc-600 dark:text-zinc-400">
-          Once the invoice is ready, the user can download it in the format they need without opening another tool.
-        </p>
-      </div>
-
-      <div class="md:col-span-7 grid md:grid-cols-2 gap-8">
-        <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700">
-          <div class="flex items-center gap-x-4 mb-6">
-            <div class="text-4xl">📕</div>
-            <div>
-              <h3 class="text-2xl font-semibold">PDF download</h3>
+            <div class="hero-trust">
+              <div class="trust-item">
+                <strong>Fast</strong>
+                Same-minute invoice creation
+              </div>
+              <div class="trust-item">
+                <strong>Clean</strong>
+                Client-ready invoice generator
+              </div>
+              <div class="trust-item">
+                <strong>Simple</strong>
+                Online bill maker with no clutter
+              </div>
             </div>
           </div>
-          <ul class="space-y-4 text-zinc-600 dark:text-zinc-400">
-            <li class="flex items-start gap-x-3"><span class="text-blue-500 mt-1">•</span> Best for email delivery and printing.</li>
-            <li class="flex items-start gap-x-3"><span class="text-blue-500 mt-1">•</span> Works well for records and client approvals.</li>
-            <li class="flex items-start gap-x-3"><span class="text-blue-500 mt-1">•</span> Maintains a clean, professional page format.</li>
-          </ul>
-        </div>
 
-        <div class="glass rounded-3xl p-8 border border-white/60 dark:border-zinc-700">
-          <div class="flex items-center gap-x-4 mb-6">
-            <div class="text-4xl">🖼️</div>
-            <div>
-              <h3 class="text-2xl font-semibold">Image download</h3>
+          <div class="showcase">
+            <div class="glass-panel">
+              <div class="preview-top">
+                <strong>Live Preview Flow</strong>
+                <span class="preview-badge">4 steps • 38 seconds</span>
+              </div>
+
+              <div class="hero-mock">
+                <div class="fake-window">
+                  <div class="window-bar">
+                    <span class="window-dot"></span>
+                    <span class="window-dot"></span>
+                    <span class="window-dot"></span>
+                  </div>
+
+                  <div class="mock-body">
+                    <div class="mock-editor">
+                      <h3>Editor</h3>
+                      <div class="mock-field w80"></div>
+                      <div class="mock-field w68"></div>
+                      <div class="mock-field w90"></div>
+                      <div class="mock-field w54"></div>
+                      <div class="mock-field w80"></div>
+                      <div class="mock-field w68"></div>
+                      <div class="mock-field w90"></div>
+                      <div class="mock-field w54"></div>
+                    </div>
+
+                    <div class="mock-preview">
+                      <h3>Preview</h3>
+                      <div class="invoice-sheet">
+                        <div class="brand-row">
+                          <div class="sheet-logo"></div>
+                          <div class="sheet-title">
+                            <strong>Lumira Studio</strong>
+                            <span>Invoice #INV-1001</span>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <strong>Northstar Agency</strong>
+                          <span>USD 1,375.00</span>
+                        </div>
+
+                        <div class="sheet-grid">
+                          <div class="sheet-box">
+                            <label>Issued</label>
+                            <strong>2026-03-01</strong>
+                          </div>
+                          <div class="sheet-box">
+                            <label>Due</label>
+                            <strong>2026-03-15</strong>
+                          </div>
+                        </div>
+
+                        <div class="sheet-box">
+                          <label>Items</label>
+                          <strong>Brand strategy, landing page design</strong>
+                        </div>
+
+                        <div class="sheet-total">
+                          <span>Ready to export</span>
+                          <strong>PDF / Image</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <ul class="space-y-4 text-zinc-600 dark:text-zinc-400">
-            <li class="flex items-start gap-x-3"><span class="text-violet-500 mt-1">•</span> Useful for quick sharing in chat apps.</li>
-            <li class="flex items-start gap-x-3"><span class="text-violet-500 mt-1">•</span> Handy for previews or simple visual copies.</li>
-            <li class="flex items-start gap-x-3"><span class="text-violet-500 mt-1">•</span> Still keeps the invoice layout looking polished.</li>
-          </ul>
+        </div>
+
+        <section class="ad-slot" aria-label="Advertisement">
+          <div class="ad-label">Sponsored</div>
+          <script async="async" data-cfasync="false" src="https://pl29247228.profitablecpmratenetwork.com/9395b1a1cf2c840d940354dbe416f788/invoke.js"></script>
+          <div id="container-9395b1a1cf2c840d940354dbe416f788"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>The workflow stays short and clear.</h2>
+            <p>Everything is designed to remove friction. The user never needs to think about setup, accounts, or hidden steps.</p>
+          </div>
+        </div>
+
+        <div class="workflow">
+          <article class="step-card">
+            <div class="step-index">1</div>
+            <h3>Open Lumira and choose a template</h3>
+            <p>Users land on the website, open the template gallery, and pick a style that fits the brand. The template selection happens first so the form and preview are already aligned from the start.</p>
+          </article>
+
+          <article class="step-card">
+            <div class="step-index">2</div>
+            <h3>Fill the invoice form</h3>
+            <p>They enter business details, client details, invoice number, dates, item rows, tax, totals, notes, and payment info. Fields appear in a clean order so the workflow feels familiar and professional.</p>
+          </article>
+
+          <article class="step-card">
+            <div class="step-index">3</div>
+            <h3>Watch the live preview update instantly</h3>
+            <p>Every character added or removed in the form updates the invoice preview right away. No refresh button, no manual sync, and no confusion between form data and the template.</p>
+          </article>
+
+          <article class="step-card">
+            <div class="step-index">4</div>
+            <h3>Download as PDF or image</h3>
+            <p>When the invoice looks right, users export it as a PDF for sending or printing, or as an image for quick sharing. The output is clean, client-ready, and fast to generate.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>Why people keep using it.</h2>
+            <p>The product feels light, clear, and professional. That makes it easier to return to the next time someone needs an invoice.</p>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric">
+            <strong>🚀</strong>
+            <span>No sign-up needed. Users can start immediately and reach the editor faster.</span>
+          </div>
+          <div class="metric">
+            <strong>🎨</strong>
+            <span>Template-first flow keeps the structure clear and removes confusion from the start.</span>
+          </div>
+          <div class="metric">
+            <strong>⚡</strong>
+            <span>Live preview stays in sync with the form in real time, so users trust the result.</span>
+          </div>
+          <div class="metric">
+            <strong>📤</strong>
+            <span>PDF and image export give users the exact format they need without leaving the product.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <h2>Export is the final step.</h2>
+            <p>Once the invoice is ready, the user can download it in the format they need without opening another tool.</p>
+          </div>
+        </div>
+
+        <div class="feature-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8"/></svg>
+            </div>
+            <h3>PDF download</h3>
+            <p>Best for email delivery and printing. It works well for records, approvals, and a clean professional page format.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 13l2.5-2.5L14 14l2-2 2 2"/><circle cx="9" cy="9" r="1"/></svg>
+            </div>
+            <h3>Image download</h3>
+            <p>Useful for quick sharing in chat apps and simple visual copies while still keeping the invoice layout polished.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" style="padding-bottom:18px;">
+      <div class="cta-box">
+        <div class="cta-box-inner">
+          <div class="cta-copy">
+            <h2>Ready-to-use workflow, built for speed.</h2>
+            <p>Choose a template, fill the fields, review the live preview, and export. That is the entire journey. It feels simple for users and scalable for a SaaS product.</p>
+          </div>
+
+          <div class="cta-actions" style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="templates.html" class="btn btn-secondary">
+              Browse Templates
+            </a>
+            <a href="editor.html" class="btn btn-primary">
+              Open Editor →
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-    <div class="bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 rounded-3xl p-8 md:p-16 text-white text-center relative overflow-hidden">
-      <div class="max-w-2xl mx-auto">
-        <h3 class="text-3xl md:text-4xl font-semibold tracking-[-1px]">Ready-to-use workflow, built for speed.</h3>
-        <p class="mt-4 text-base md:text-lg opacity-90">
-          Choose a template, fill the fields, review the live preview, and export. That is the entire journey. It feels simple for users and scalable for a SaaS product.
-        </p>
+    <section class="section">
+      <div class="container">
+        <div class="feedback-panel">
+          <div>
+            <div class="eyebrow" style="margin-bottom:14px;">Feedback and product ideas</div>
+            <h3>Help shape the next version of Lumira.</h3>
+            <p>One clean feedback route works better than hiding contact options everywhere. This block keeps the site lightweight while still giving users a direct way to report issues, suggest templates, or request new features.</p>
+            <div class="feedback-note">Google Form opens instantly in a new tab.</div>
 
-        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-10">
-          <a href="templates.html" class="px-8 py-4 bg-white text-zinc-900 font-semibold rounded-3xl flex items-center justify-center gap-x-3 text-base md:text-lg shadow-xl">
-            Browse Templates
-          </a>
-          <a href="editor.html" class="px-8 py-4 border border-white/40 hover:border-white font-semibold rounded-3xl flex items-center justify-center gap-x-3 text-base md:text-lg">
-            Open Editor →
-          </a>
+            <div class="social-row">
+              <a class="social-btn" href="https://x.com/LumiraInvHQ" target="_blank" rel="noreferrer" aria-label="Open X">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                X
+              </a>
+
+              <a class="social-btn" href="https://www.linkedin.com/in/lumira-hq-41820b3b8" target="_blank" rel="noreferrer" aria-label="Open LinkedIn">
+                <svg viewBox="0 0 24 24">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div class="feedback-actions">
+            <button class="btn btn-primary" id="panelFeedbackBtn" type="button">
+              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Give Feedback
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <footer class="border-t border-zinc-200 dark:border-zinc-800 py-12">
-    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-y-6">
-      <p class="text-zinc-500 dark:text-zinc-400 text-sm">
-        Lumira Invoicing — no sign-up, fast workflow, live preview, PDF export, and image export.
-      </p>
-
-      <div class="flex items-center gap-x-8 text-sm font-medium">
-        <a href="index.html" class="hover:text-blue-600">Home</a>
-        <a href="templates.html" class="hover:text-blue-600">Templates</a>
-        <a href="editor.html" class="hover:text-blue-600">Editor</a>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>© <span id="year"></span> Lumira Invoicing. No sign-up, fast workflow, live preview, PDF export, and image export.</div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="templates.html">Templates</a>
+          <a href="editor.html">Editor</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <button onclick="window.open('https://forms.gle/31xLtR3Ek1b6p3F97','_blank')"
-    class="floating-help fixed bottom-8 right-8 flex items-center gap-x-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white px-6 py-4 rounded-3xl font-semibold shadow-2xl hover:shadow-blue-500/50 transition-all">
-    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
-    Feedback
-  </button>
-
   <script>
-    function initializeTailwind() {
-      return {
-        config(userConfig = {}) {
-          return {
-            content: [],
-            theme: { extend: {} },
-            plugins: [],
-            ...userConfig,
-          };
-        },
-        theme() {
-          return {
-            extend: {
-              colors: { brand: '#2563eb' }
-            }
-          };
-        }
-      };
+    const feedbackUrl = "https://forms.gle/31xLtR3Ek1b6p3F97";
+
+    function openFeedbackDirect() {
+      window.open(feedbackUrl, "_blank", "noopener,noreferrer");
+    }
+
+    function replaceThemeIcon(nextTheme) {
+      const icon = document.getElementById("themeIcon");
+      if (!icon) return;
+
+      if (nextTheme === "light") {
+        icon.innerHTML = `
+          <circle cx="12" cy="12" r="5"></circle>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+        `;
+      } else {
+        icon.innerHTML = `
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        `;
+      }
+    }
+
+    function setTheme(theme) {
+      const next = theme === "dark" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      document.documentElement.classList.toggle("dark", next === "dark");
+
+      try { localStorage.setItem("lumira-theme", next); } catch (e) {}
+
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) metaThemeColor.setAttribute("content", next === "dark" ? "#0f172a" : "#f8fafc");
+
+      replaceThemeIcon(next);
     }
 
     function initTheme() {
-      const THEME_KEY = 'lumira-theme';
-      const toggle = document.getElementById('themeToggle');
-      const icon = document.getElementById('themeIcon');
-
-      function applyTheme(isDark) {
-        if (isDark) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          document.documentElement.classList.add('dark');
-          localStorage.setItem(THEME_KEY, 'dark');
-          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />`;
+      try {
+        const saved = localStorage.getItem("lumira-theme");
+        if (saved === "dark" || saved === "light") {
+          setTheme(saved);
         } else {
-          document.documentElement.setAttribute('data-theme', 'light');
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem(THEME_KEY, 'light');
-          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />`;
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          setTheme(prefersDark ? "dark" : "light");
         }
-
-        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (metaThemeColor) {
-          metaThemeColor.setAttribute('content', isDark ? '#0f172a' : '#f8fafc');
-        }
+      } catch (e) {
+        setTheme("light");
       }
-
-      const savedTheme = localStorage.getItem(THEME_KEY);
-      if (savedTheme) {
-        applyTheme(savedTheme === 'dark');
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        applyTheme(prefersDark);
-      }
-
-      toggle.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.contains('dark');
-        applyTheme(!isDark);
-      });
     }
 
-    window.onload = function() {
-      initializeTailwind();
-      initTheme();
-      console.log('%c🚀 Lumira How It Works – Premium SaaS UI loaded successfully', 'color:#2563eb;font-weight:700;font-size:13px');
-    };
+    document.getElementById("feedbackFab")?.addEventListener("click", openFeedbackDirect);
+    document.getElementById("panelFeedbackBtn")?.addEventListener("click", openFeedbackDirect);
+    document.getElementById("themeToggle")?.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      setTheme(current === "dark" ? "light" : "dark");
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    window.addEventListener("DOMContentLoaded", initTheme);
+    window.addEventListener("load", () => {
+      replaceThemeIcon(document.documentElement.getAttribute("data-theme") || "light");
+    });
   </script>
 
   <script src="https://pl29247227.profitablecpmratenetwork.com/ef/e4/66/efe466c259975d1f26f2eb0b556fbc86.js"></script>
