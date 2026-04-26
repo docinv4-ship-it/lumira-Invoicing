@@ -1096,6 +1096,35 @@
       previewImage.onerror = null;
     }
 
+    function persistSelectedTemplate(template) {
+      const payload = {
+        id: template.id,
+        name: template.name,
+        category: template.category,
+        badge: template.badge,
+        image: template.image
+      };
+
+      try {
+        localStorage.setItem("lumira-selected-template", JSON.stringify(payload));
+        localStorage.setItem("lumira-selected-template-id", String(template.id));
+        localStorage.setItem("lumira-selected-template-name", template.name);
+        localStorage.setItem("lumira-selected-template-image", template.image);
+        sessionStorage.setItem("lumira-selected-template", JSON.stringify(payload));
+      } catch (error) {}
+    }
+
+    function buildEditorUrl(template) {
+      const params = new URLSearchParams({
+        template: String(template.id),
+        templateId: String(template.id),
+        selectedTemplate: String(template.id),
+        name: template.name
+      });
+
+      return `./editor.html?${params.toString()}`;
+    }
+
     function createCard(template) {
       const article = document.createElement("article");
       article.className = "template-card";
@@ -1115,19 +1144,31 @@
           </div>
           <div class="template-actions">
             <button class="btn btn-secondary" type="button" data-action="preview">Preview</button>
-            <a class="btn btn-primary" href="editor.html?template=${template.id}">Use Template</a>
+            <a
+              class="btn btn-primary"
+              href="${buildEditorUrl(template)}"
+              data-action="use"
+            >Use Template</a>
           </div>
         </div>
       `;
 
       const img = article.querySelector("img");
+      const previewButton = article.querySelector('[data-action="preview"]');
+      const useLink = article.querySelector('[data-action="use"]');
+
       img.onerror = function () {
         this.onerror = null;
         this.src = makeFallbackImage(template.name);
       };
 
-      article.querySelector('[data-action="preview"]').addEventListener("click", () => openPreview(template));
+      previewButton.addEventListener("click", () => openPreview(template));
       img.addEventListener("click", () => openPreview(template));
+
+      useLink.addEventListener("click", () => {
+        persistSelectedTemplate(template);
+      });
+
       return article;
     }
 
@@ -1180,8 +1221,5 @@
     renderGallery();
     initTheme();
   </script>
-
-  <!-- Adsterra Popunder -->
-  <script src="https://pl29247227.profitablecpmratenetwork.com/ef/e4/66/efe466c259975d1f26f2eb0b556fbc86.js"></script>
 </body>
 </html>
