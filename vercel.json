@@ -1,2 +1,10 @@
 
-{}
+{
+  "routes": [
+    { "src": "^/$", "dest": "/index.html" },
+    { "src": "^/templates$", "dest": "/templates.html" },
+    { "src": "^/editor$", "dest": "/editor.html" },
+    { "src": "^/templates.html$", "dest": "/templates.html" },
+    { "src": "^/editor.html$", "dest": "/editor.html" }
+  ]
+}
