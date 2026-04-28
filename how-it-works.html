@@ -106,21 +106,24 @@
     .brand-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
     .brand-text strong{font-size:1rem;letter-spacing:.01em}
     .brand-text span{font-size:.82rem;color:var(--muted)}
+
     .nav-links{
       display:flex;align-items:center;gap:18px;flex-wrap:wrap;
       color:var(--muted);font-size:.95rem
     }
     .nav-links a:hover{color:var(--text)}
+
     .nav-actions{
       display:flex;align-items:center;gap:10px;flex-wrap:wrap;
     }
-    .btn,.icon-btn,.social-btn,.theme-toggle,.feedback-fab{
+
+    .btn,.icon-btn,.social-btn,.theme-toggle{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       border:1px solid var(--border);background:var(--surface);color:var(--text);
       border-radius:16px; cursor:pointer; transition:transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
       white-space:nowrap;
     }
-    .btn:hover,.icon-btn:hover,.social-btn:hover,.theme-toggle:hover,.feedback-fab:hover{transform:translateY(-1px)}
+    .btn:hover,.icon-btn:hover,.social-btn:hover,.theme-toggle:hover{transform:translateY(-1px)}
     .btn{padding:14px 18px;font-weight:700}
     .btn-primary{
       border:0;
@@ -133,7 +136,7 @@
       color:var(--text);
     }
     .icon-btn,.theme-toggle,.social-btn{width:42px;height:42px;border-radius:14px;flex:0 0 auto}
-    .icon-btn svg,.btn svg,.social-btn svg,.theme-toggle svg,.feedback-fab svg{
+    .icon-btn svg,.btn svg,.social-btn svg,.theme-toggle svg{
       width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;
     }
 
@@ -174,7 +177,6 @@
     .hero-actions{
       display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;
     }
-    .hero-actions .btn{padding:14px 18px}
     .hero-trust{
       margin-top:24px;
       display:flex; gap:18px; flex-wrap:wrap;
@@ -182,6 +184,7 @@
       font-size:.92rem;
     }
     .trust-item strong{display:block;color:var(--text);font-size:1rem;margin-bottom:2px}
+
     .showcase{padding:8px}
     .glass-panel{
       border-radius:30px;
@@ -311,19 +314,6 @@
     }
     .metric strong{display:block;font-size:2rem;letter-spacing:-.04em;margin-bottom:6px}
 
-    .ad-slot{
-      margin:22px 0 8px;
-      padding:16px;border:1px solid var(--border);border-radius:24px;
-      background:var(--surface);box-shadow:var(--shadow-soft)
-    }
-    .ad-label{
-      display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;
-      color:var(--muted2);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em
-    }
-    .ad-label::before{
-      content:"";width:8px;height:8px;border-radius:999px;background:var(--brand);box-shadow:0 0 0 6px rgba(96,165,250,.12)
-    }
-
     .feedback-panel{
       padding:24px;border-radius:28px;background:var(--surface);border:1px solid var(--border);
       display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;box-shadow:var(--shadow-soft)
@@ -403,31 +393,19 @@
         left:16px; right:16px; width:calc(100% - 32px);
         display:flex; justify-content:center
       }
-      .hero .grid.grid-cols-4{grid-template-columns:1fr}
-      .hero .grid.grid-cols-4 .absolute{display:none}
     }
 
     @media (max-width: 480px){
       .container{width:min(calc(100% - 20px), var(--container))}
       .hero-copy,.section-heading p,.feature-card p,.step-card p,.metric span,.feedback-panel p,.cta-copy p{font-size:.98rem}
-      .glass-panel,.ad-slot,.cta-box{border-radius:20px}
+      .glass-panel,.cta-box{border-radius:20px}
       .brand-mark{width:40px;height:40px}
       .brand-text strong{font-size:.96rem}
       .brand-text span{font-size:.74rem}
-      .hero .inline-flex.items-center.gap-x-2{width:100%;justify-content:center;text-align:center}
       .preview-badge{width:100%;text-align:center}
       .sheet-total,.invoice-sheet .row{flex-direction:column;align-items:flex-start}
     }
   </style>
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-53W9XQJY6X"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-53W9XQJY6X');
-  </script>
 
   <script type="application/ld+json">
   {
@@ -601,12 +579,6 @@
             </div>
           </div>
         </div>
-
-        <section class="ad-slot" aria-label="Advertisement">
-          <div class="ad-label">Sponsored</div>
-          <script async="async" data-cfasync="false" src="https://pl29247228.profitablecpmratenetwork.com/9395b1a1cf2c840d940354dbe416f788/invoke.js"></script>
-          <div id="container-9395b1a1cf2c840d940354dbe416f788"></div>
-        </section>
       </div>
     </section>
 
@@ -825,7 +797,6 @@
       }
     }
 
-    document.getElementById("feedbackFab")?.addEventListener("click", openFeedbackDirect);
     document.getElementById("panelFeedbackBtn")?.addEventListener("click", openFeedbackDirect);
     document.getElementById("themeToggle")?.addEventListener("click", () => {
       const current = document.documentElement.getAttribute("data-theme") || "light";
@@ -839,7 +810,5 @@
       replaceThemeIcon(document.documentElement.getAttribute("data-theme") || "light");
     });
   </script>
-
-  <script src="https://pl29247227.profitablecpmratenetwork.com/ef/e4/66/efe466c259975d1f26f2eb0b556fbc86.js"></script>
 </body>
 </html>
